@@ -29,7 +29,7 @@ int cs457::tcpServerSocket::listenSocket()
 }
 
 tuple<shared_ptr<cs457::tcpUserSocket>,int> cs457::tcpServerSocket::acceptSocket()
-{
+{SOCK_STREAM
     shared_ptr<cs457::tcpUserSocket> userSocket = make_shared<tcpUserSocket>(); 
     socklen_t len = userSocket.get()->getLenghtPointer();
     int client_fd = accept(serverSocket,(struct sockaddr *)userSocket.get()->getAddressPointer(),&len);

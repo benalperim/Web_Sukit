@@ -1,8 +1,9 @@
-snippets, ideas,  
+#include "tcpUserSocket.h"
 
 using namespace std; 
 
 namespace cs457{
+
     class chatUser{
         public: 
 
