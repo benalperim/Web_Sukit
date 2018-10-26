@@ -1,4 +1,4 @@
-
+#include "client.h"
 
 
 int cs457::client::INIT_SOCKET(int port_number, string hostname) {
@@ -12,9 +12,9 @@ int cs457::client::INIT_SOCKET(int port_number, string hostname) {
     }
 	cout << "Socket built!!!\n";
     cout << "I am initializing the socket...\n";
-	client.sin_family = AF_INET;                      
-	client.sin_port = port_number;                    
-	client.sin_addr.s_addr = inet_addr(hostname);                
+	clientSocket.sin_family = AF_INET;                      
+	clientSocket.sin_port = port_number;                    
+	clientSocket.sin_addr.s_addr = inet_addr(hostname.c_str());                
  
 	cout << "Socket initialization COMPLETED...!\n";
 	
@@ -25,12 +25,12 @@ int cs457::client::INIT_SOCKET(int port_number, string hostname) {
 
 socklen_t cs457::client::getLenghtPointer()
 {
-    socklen_t len = sizeof(client);  
+    socklen_t len = sizeof(clientSocket);  
     return len;
 }
 
 
-struct sockaddr * client::tcpUserSocket::getAddressPointer()
+struct sockaddr * cs457::client::getAddressPointer()
 {
-    return ((struct sockaddr *) &client);
+    return ((struct sockaddr *) &clientSocket);
 }

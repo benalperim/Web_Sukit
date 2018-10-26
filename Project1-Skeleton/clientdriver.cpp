@@ -14,17 +14,17 @@ using namespace std;
 
 
 int main(int argc, char * argv[]){
-
+    cs457::client client;
     if (argc != 4){
         cout <<"Not enough arguments passed" << endl;
     }
     string hostAddress = argv[1];
     string username = argv[2];
     int port = stoi(argv[3]);
-    int client_Sukit = cs457::client::INIT_SOCKET( port , hostAddress);
+    int client_Sukit = client.INIT_SOCKET(port , hostAddress);
    
 
-    connect( client_Sukit, cs457::client::getAddressPointer()  ,cs457::client::getLenghtPointer;
+    connect( client_Sukit, client.getAddressPointer()  ,client.getLenghtPointer());
 
     
 }
