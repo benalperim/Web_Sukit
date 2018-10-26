@@ -1,11 +1,13 @@
 
 #include "client.h"
 #include "tcpUserSocket.h"
+#include <iostream>
 #include <stdio.h> 
 #include <sys/socket.h> 
 #include <stdlib.h> 
 #include <netinet/in.h> 
 #include <string.h> 
+
 using namespace std;
 
 
@@ -14,14 +16,15 @@ using namespace std;
 int main(int argc, char * argv[]){
 
     if (argc != 4){
-        std::cout <<"Not enough arguments passed" << std::endl;
+        cout <<"Not enough arguments passed" << endl;
     }
-    string hostAddress =
-    int  port = 
-    client_Sukit = cs457::client::INIT_SOCKET(port , hostAddress);
+    string hostAddress = argv[1];
+    string username = argv[2];
+    int port = stoi(argv[3]);
+    int client_Sukit = cs457::client::INIT_SOCKET( port , hostAddress);
    
 
-    connect( client_Sukit, cs457::client::getAddressPointer()  ,cs457::client::getLenghtPointer());
+    connect( client_Sukit, cs457::client::getAddressPointer()  ,cs457::client::getLenghtPointer;
 
     
 }

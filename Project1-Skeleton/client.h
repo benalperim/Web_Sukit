@@ -17,11 +17,11 @@ namespace cs457{
         public: 
             //setup  connection to the driver
             int INIT_SOCKET(int port_number, string hostname);
-            struct socklen_t getLenghtPointer();
-            struct sockaddr * getAddressPointer()
+            socklen_t getLenghtPointer();
+            struct sockaddr * getAddressPointer();
 
         private:
             struct sockaddr_in client; 
-        }
+        };
 }
 
