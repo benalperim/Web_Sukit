@@ -1,31 +1,27 @@
-/* snippets, ideas,  
+snippets, ideas,  
 
 using namespace std; 
 
-namespace cs457 
-{
-    class chatUser 
-    {
-    public: 
+namespace cs457{
+    class chatUser{
+        public: 
 
 
 
-    private:
+        private:
 
         string nickName; 
         string password; 
         //what rooms am I in now?
-    tcpUserSocket userSocket; 
+        tcpUserSocket userSocket; 
 
 
 
     };
 
-    class chatRooms
-    {
+    class chatRooms{
         
     };
 
 }
 
-*/
