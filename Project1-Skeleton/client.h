@@ -1,3 +1,5 @@
+#pragma once
+
 #include "tcpUserSocket.h"
 #include <stdio.h> 
 #include <sys/socket.h> 

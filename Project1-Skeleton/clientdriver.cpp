@@ -16,28 +16,33 @@ int main(int argc, char * argv[]){
     if (argc != 4){
         std::cout <<"Not enough arguments passed" << std::endl;
     }
-
+    string hostAddress =
+    int  port = 
+    client_Sukit = cs457::client::INIT_SOCKET(port , hostAddress);
    
 
-    connect( sockfd, const struct sockaddr *addr, socklen_t addrlen);
+    connect( client_Sukit, cs457::client::getAddressPointer()  ,cs457::client::getLenghtPointer());
 
     
 }
 
-MAIN(){
 
-   int gate_n = 6666;
-   int main_socket, ds_sock, ds_sock_bis;
-   struct sockaddr client;
-   int main_socket_bis, dim;
-   char buff[BUFF_SIZE];
-   char buffer_nome_file[F_NAME_L];
-   int ret, status;
-   dim = sizeof(client);  
-   main_socket = INIT_SOCKET(gate_n); 
-   dim = sizeof(client);
-   cout << "Waiting for connections..........\n";   
-   while(1) {
-      main_socket_bis = accept(main_socket, &client, &dim);
-      while(accept(main_socket, &client, &dim)) == -1);
-      cout << "Conenction established!\n";
+
+
+// MAIN(){
+
+//    int gate_n = 6666;
+//    int main_socket, ds_sock, ds_sock_bis;
+//    struct sockaddr client;
+//    int main_socket_bis, dim;
+//    char buff[BUFF_SIZE];
+//    char buffer_nome_file[F_NAME_L];
+//    int ret, status;
+//    dim = sizeof(client);  
+//    main_socket = INIT_SOCKET(gate_n); 
+//    dim = sizeof(client);
+//    cout << "Waiting for connections..........\n";   
+//    while(1) {
+//       main_socket_bis = accept(main_socket, &client, &dim);
+//       while(accept(main_socket, &client, &dim)) == -1);
+//       cout << "Conenction established!\n";
