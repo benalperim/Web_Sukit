@@ -21,9 +21,10 @@ int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id)
     while (cont) 
     {
         tie(msg,val) = clientSocket.get()->recvString();
-        if (msg.substr(0,4) == "EXIT")
+        if (msg.substr(0,4) == "EXIT"){
             cont = false; 
-       
+            break;
+        }
         cout << "[SERVER] The client is sending message " << msg << " -- With value return = " << val << endl;
         string s =  "[SERVER REPLY] The client is sending message:" + msg  + "\n"; 
         thread childT1(&cs457::tcpUserSocket::sendString,clientSocket.get(),s,true);
