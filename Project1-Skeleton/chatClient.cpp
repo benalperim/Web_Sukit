@@ -37,14 +37,15 @@ int Usage(char* arg0){
     cout << "-h hostname (if applicable) " << endl; 
     cout << "-u username (if applicable) " << endl; 
     cout << "-p server port (if applicable) " << endl; 
-    cout << "-c configuarionfile (if applicable) " << endl;  
-    cout << "-t  test file " << endl; 
+    cout << "-c configuarionfile (if applicable) please put the file under Web_Sukit folder or give absolute path as the argument" << endl;  
+    cout << "-t please put the file under Web_Sukit folder or give absolute path as the argument test file " << endl; 
     cout << "Commands or messages  to send at the end." << endl; 
-     
+    cout << "please pass at least 1 argument "<< endl;
+
     return -1;
 }
 
-void RecvMess(tcpClientSocket & socket){
+void RecvMess(client & Client , tcpClientSocket & socket){
     while(true){
         string msg;
             ssize_t v;
@@ -65,7 +66,7 @@ int main(int argc, char * argv[])
     int port = 2000;
     string userName = "AlperDaddy";
     string message ="no value passed";
-    if(argc == 2){return Usage(argv[0]);}
+    if(argc < 2){return Usage(argv[0]);}
     
     for(int i = 1; i <argc; i++){
         // get host
@@ -105,15 +106,14 @@ int main(int argc, char * argv[])
     client Client(serverIP ,userName, port );
 
     tcpClientSocket clientSocket(serverIP,port);
-    
+    int x = 1
     int val = clientSocket.connectSocket(); 
     cout << "Client Socket Value after connect = " << val << endl; 
-    while (true){
+    while (x == 1){
         cout << "enter a command: "; 
         
         clientSocket.sendString(message,false);
-         
-        
+        x= 2;        
 
         
         
@@ -124,7 +124,7 @@ int main(int argc, char * argv[])
 
     clientSocket.sendString("Hello Server. How are you? ",false); 
     //THREAEEEAD
-    thread child1(RecvMess, ref(clientSocket));
+    thread child1(RecvMess, ref(Client), ref(clientSocket));
 
     cout << "Client will try to exit now" <<endl;
 
