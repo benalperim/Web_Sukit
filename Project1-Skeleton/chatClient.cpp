@@ -32,6 +32,20 @@ bool Setup(string configFile, string& hostName, string& userName, int port){
     return true;
 }
 
+vector<string> testFile(string testFile){
+    vector<string> testFileCopy;
+    ifstream ifstr;
+    ifstr.open(testFile);
+    string line;
+
+    while(getline(ifstr, line)){
+        testFileCopy.push_back(line);
+    }
+    ifstr.close();
+}
+
+
+
 int Usage(char* arg0){
     cout << "When you are passing arguments please pass in the order of " << endl;
     cout << "-h hostname (if applicable) " << endl; 
@@ -59,6 +73,7 @@ void RecvMess(client & Client , tcpClientSocket & socket){
 
 
 
+
 int main(int argc, char * argv[])
 {
     vector <string> commands;
@@ -83,7 +98,7 @@ int main(int argc, char * argv[])
             }
          }
 
-        //if(argv[i] == "-t"){Test(argv[i + 1]);}
+        if(argv[i] == "-t"){testFile(argv[i + 1]);}
         //get the command 
         if(argv[i][0] == '/'){
             
@@ -106,7 +121,7 @@ int main(int argc, char * argv[])
     client Client(serverIP ,userName, port );
 
     tcpClientSocket clientSocket(serverIP,port);
-    int x = 1
+    int x = 1;
     int val = clientSocket.connectSocket(); 
     cout << "Client Socket Value after connect = " << val << endl; 
     while (x == 1){
