@@ -11,8 +11,6 @@
 #include <mutex> 
 
 
-namespace cs457
-{
     using namespace std; 
     //an ideal solution is to create a socket and then either 
     //derive or create templates that handle the differences 
@@ -52,5 +50,4 @@ namespace cs457
     };
 
 
-}
 

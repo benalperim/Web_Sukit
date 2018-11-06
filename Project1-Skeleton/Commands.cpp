@@ -4,7 +4,14 @@
 using namespace std;
 //May need other headers to be able to do functions
 //Do the check for the '/' in driver
+<<<<<<< HEAD
 void checkCommand(int command, string& arguments){
+=======
+
+
+void cs457::tcpClientSocket::init()
+void checkCommand(int& command){
+>>>>>>> 8f0ba15fd7ae3c771b8974a679cdbea3afefe440
     switch(command){
         case 0: AWAY(string& arguments); break;
         case 1: CONNECT(string& arguments); break;
