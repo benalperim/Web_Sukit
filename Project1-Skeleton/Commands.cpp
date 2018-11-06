@@ -1,7 +1,10 @@
 #include "Commands.h"
+#include <string>
+
+using namespace std;
 //May need other headers to be able to do functions
 //Do the check for the '/' in driver
-void checkCommand(int& command){
+void checkCommand(int command, string& arguments){
     switch(command){
         case 0: AWAY(string& arguments); break;
         case 1: CONNECT(string& arguments); break;

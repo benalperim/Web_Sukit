@@ -8,7 +8,7 @@ namespace cs457
     class Commands
     {
         public:
-        void checkCommand(int&);
+        void checkCommand(int, string&);
         void AWAY(string&);
         void CONNECT(string&);
         void DIE(string&);
