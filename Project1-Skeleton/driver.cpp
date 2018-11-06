@@ -22,7 +22,7 @@ int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id)
     {
         tie(msg,val) = clientSocket.get()->recvString();
         if (msg.substr(0,4) == "EXIT"){
-            cont = false; 
+            cont = false;  
             break;
         }
         cout << "[SERVER] The client is sending message " << msg << " -- With value return = " << val << endl;
@@ -52,8 +52,8 @@ int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id)
     }
 
     clientSocket.get()->sendString("goodbye"); 
-    
     clientSocket.get()->closeSocket(); 
+  
     return 1; 
 }
 

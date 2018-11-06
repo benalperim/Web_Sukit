@@ -8,7 +8,7 @@
 using namespace std; 
     
 
-cs457::tcpClientSocket::tcpClientSocket(string networkAddress, uint portNumber): address(networkAddress), port(portNumber)
+tcpClientSocket::tcpClientSocket(string networkAddress, uint portNumber): address(networkAddress), port(portNumber)
 {
     init(); 
     setSocketOptions();
@@ -17,7 +17,7 @@ cs457::tcpClientSocket::tcpClientSocket(string networkAddress, uint portNumber):
 
 
 
-void cs457::tcpClientSocket::init()
+void tcpClientSocket::init()
 {
     //here I may have differences with server 
     //check after testing
@@ -33,26 +33,26 @@ void cs457::tcpClientSocket::init()
     serverAddress.sin_port = htons(port);
 }
 
-void cs457::tcpClientSocket::setSocketOptions()
+void tcpClientSocket::setSocketOptions()
 {
     int optval = 1;
     setsockopt(clientSocket, SOL_SOCKET, SO_REUSEADDR, 
 	                (const void *)&optval , sizeof(int));
 }
 
-int cs457::tcpClientSocket::connectSocket()
+int tcpClientSocket::connectSocket()
 {
     return connect(clientSocket,(struct sockaddr *)&serverAddress,sizeof(serverAddress));
 
 
 }
 
-int cs457::tcpClientSocket::closeSocket()
+int tcpClientSocket::closeSocket()
 {
     return close(clientSocket);
 }
 
-std::tuple<string,ssize_t> cs457::tcpClientSocket::recvString(int bufferSize, bool useMutex)
+std::tuple<string,ssize_t> tcpClientSocket::recvString(int bufferSize, bool useMutex)
 {
     char stringBuffer[bufferSize]; 
   
@@ -76,7 +76,7 @@ std::tuple<string,ssize_t> cs457::tcpClientSocket::recvString(int bufferSize, bo
 };
         
 
-ssize_t cs457::tcpClientSocket::sendString(const string & data, bool useMutex)
+ssize_t tcpClientSocket::sendString(const string & data, bool useMutex)
 {
     //https://stackoverflow.com/questions/7352099/stdstring-to-char
     if (data.size() == 0) return 0;                 

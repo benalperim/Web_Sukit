@@ -1,6 +1,9 @@
 #include "Commands.h"
 //May need other headers to be able to do functions
 //Do the check for the '/' in driver
+
+
+void cs457::tcpClientSocket::init()
 void checkCommand(int& command){
     switch(command){
         case 0: AWAY(string& arguments); break;
