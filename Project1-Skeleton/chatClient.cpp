@@ -75,7 +75,7 @@ void RecvMess(tcpClientSocket & socket){
                 cout << msg <<endl;
             }
 
-            //if (msg == "goodbye"){break;}
+            if (msg == "goodbye"){break;}
            
     }
 }
