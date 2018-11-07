@@ -1,6 +1,7 @@
 #include <iostream> 
 #include "tcpClientSocket.h"
 #include "client.h"
+#include "Commands.h"
 #include <thread> 
 #include <stdio.h>
 #include <string.h>
@@ -56,10 +57,9 @@ int Usage(char* arg0){
     cout << "-u username (if applicable) " << endl; 
     cout << "-p server port (if applicable) " << endl; 
     cout << "-c configuarionfile (if applicable) please put the file under Web_Sukit folder or give absolute path as the argument" << endl;  
-    cout << "-t please put the file under Web_Sukit folder or give absolute path as the argument test file " << endl; 
-    cout << "Commands or messages  to send at the end." << endl; 
+    cout << "-t please put the file under Web_Sukit folder or give absolute path as the argument test file " << endl;  
     cout << "please pass at least 1 argument if not it will automatically setup everything with a guest user "<< endl;
-    cout << "if there are only commands or messages put as argument it will follow the simple config setup"<< endl;
+    
 
     return -1;
 }
@@ -71,9 +71,11 @@ void RecvMess(tcpClientSocket & socket){
             ssize_t v;
             tie(msg,v) =  socket.recvString(4096,true);
             if(v > 0){
-                cout << "server said: " << msg << endl;
+                cout << "server said: " << endl;
+                cout << msg <<endl;
             }
-            if (msg == "goodbye"){break;}
+
+            //if (msg == "goodbye"){break;}
            
     }
 }
@@ -155,40 +157,31 @@ int main(int argc, char * argv[])
       
         
     //THREAEEEAD
-    int i = 0;
     bool exitcondition = true;
     cout << "Starting client example" <<endl; 
-    client Client(serverIP ,userName, port );
+    
 
     tcpClientSocket clientSocket(serverIP,port);
     
     int val = clientSocket.connectSocket();
-     clientSocket.sendString(userName,false);
-     clientSocket.sendString(message,false);
+    clientSocket.sendString(userName,false);
+    
+     
     
     cout << "Client Socket Value after connect = " << val << endl;
     
     thread child1(RecvMess,  ref(clientSocket));
     while (true){
-       
-        getline(cin, message);
-       
         
+        getline(cin, message);
+
         clientSocket.sendString(message,false);
         
         if(message == "EXIT"){
             exitcondition = false;
             break;
-        }
-               
+        }               
     }
-    
-
- 
-    //tie(msg,v) =  clientSocket.recvString(4096,false);
-    //g++-8 -g tcpClientSocket.cpp chatClient.cpp client.cpp -std=c++11 -pthread -o chatClient.out && ./chatClient.out
-
-
     
     child1.join();
     return 0; 

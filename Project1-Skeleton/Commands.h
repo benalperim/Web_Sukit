@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <vector>
+#include <unordered_map>
 
 namespace cs457
 {
@@ -47,5 +49,8 @@ namespace cs457
         void WHOIS(string&);
 
         private:
-    }
+        unordered_map<int, vector<string>> chatRoom;
+        unordered_map<string, string> privMessage;
+        
+    };
 }

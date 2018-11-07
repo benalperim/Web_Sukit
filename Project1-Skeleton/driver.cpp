@@ -10,10 +10,16 @@
 using namespace std;
 
 bool ready = true; 
+Login login;
+string user="";
+string banner = login.getBanner();
 
+ssize_t value; 
 int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id)
 {
- 
+    tie(user,value) = clientSocket.get()->recvString();
+    clientSocket.get()->sendString(banner);
+
     cout << "Waiting for message from Client Thread" << id << std::endl;
     string msg;
     ssize_t val;
@@ -25,7 +31,7 @@ int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id)
             cont = false;  
             break;
         }
-        cout << "[SERVER] The client is sending message " << msg << " -- With value return = " << val << endl;
+        cout << "[SERVER] The user "<< user<< " is sending message " << msg << " -- With value return = " << val << endl;
         string s =  "[SERVER REPLY] The client is sending message:" + msg  + "\n"; 
         thread childT1(&cs457::tcpUserSocket::sendString,clientSocket.get(),s,true);
         //thread childT2(&cs457::tcpUserSocket::sendString,clientSocket.get(),msg,true);
@@ -59,8 +65,7 @@ int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id)
 
 int main(int argc, char * argv[])
 {
-    //Login login;
-    //string banner = login.getBanner();
+  
     cout << "Initializing Socket" << std::endl; 
     cs457::tcpServerSocket mysocket(2000);
     cout << "Binding Socket" << std::endl; 
