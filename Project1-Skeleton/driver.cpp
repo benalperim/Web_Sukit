@@ -17,6 +17,7 @@ string banner = login.getBanner();
 ssize_t value; 
 int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id)
 {
+
     tie(user,value) = clientSocket.get()->recvString();
     clientSocket.get()->sendString(banner);
 
@@ -65,7 +66,7 @@ int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id)
 
 int main(int argc, char * argv[])
 {
-  
+    login.userPopulate(); //used to check valid username and password
     cout << "Initializing Socket" << std::endl; 
     cs457::tcpServerSocket mysocket(2000);
     cout << "Binding Socket" << std::endl; 
