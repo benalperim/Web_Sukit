@@ -2,20 +2,21 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include "userObject.h"
 
-namespace cs457
-{
-    using namespace std;
+using namespace std;
     
-        class Login
-        {
-            public:
-            string getBanner();
-            bool bannedUser(string&);
-            vector<string> userFileCopy();
-            bool checkUserName(string&);
-            void addUserName(string&, string&, string&);
-            private:
+    class Login
+    {
+        public:
+        string getBanner();
+        bool bannedUser(string&);
+        void userPopulate();
+        bool validateUser(string&, string&);
+        void addUserName(string&, string&);
+
+            
+        private:
+        vector<userObject> userList;
         };
     
-}
