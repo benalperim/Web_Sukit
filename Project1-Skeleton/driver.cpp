@@ -6,14 +6,14 @@
 #include <memory> 
 #include "tcpUserSocket.h"
 #include "tcpServerSocket.h"
-
+#include "Login.h"
 using namespace std;
 
 bool ready = true; 
 
 int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id)
 {
-
+ 
     cout << "Waiting for message from Client Thread" << id << std::endl;
     string msg;
     ssize_t val;
@@ -59,6 +59,8 @@ int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id)
 
 int main(int argc, char * argv[])
 {
+    //Login login;
+    //string banner = login.getBanner();
     cout << "Initializing Socket" << std::endl; 
     cs457::tcpServerSocket mysocket(2000);
     cout << "Binding Socket" << std::endl; 
@@ -67,7 +69,8 @@ int main(int argc, char * argv[])
     mysocket.listenSocket(); 
     cout << "Waiting to Accept Socket" << std::endl;
     int id = 0; 
-    vector<unique_ptr<thread>> threadList; 
+    vector<unique_ptr<thread>> threadList;
+   
   
     while (ready)
     { 
@@ -85,6 +88,8 @@ int main(int argc, char * argv[])
     
         
     }
+
+    
 
     for (auto& t: threadList)
     {

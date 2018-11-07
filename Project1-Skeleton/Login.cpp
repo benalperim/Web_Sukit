@@ -7,7 +7,7 @@
 
 using namespace std;
 
-string Login::getBanner(){ //returns a string of the banner to send after authentication
+string Login::getBanner(string & s ){ //returns a string of the banner to send after authentication
     string banner = "";
     string line;
     while(getline(ifstream("banner.txt"), line)){

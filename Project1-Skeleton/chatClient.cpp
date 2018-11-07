@@ -10,6 +10,7 @@
 
 using namespace std;
 //read the config file
+
 bool Setup(string configFile, string& hostName, string& userName, int & port){
     string type, data;
     string line;
@@ -57,13 +58,14 @@ int Usage(char* arg0){
     cout << "-c configuarionfile (if applicable) please put the file under Web_Sukit folder or give absolute path as the argument" << endl;  
     cout << "-t please put the file under Web_Sukit folder or give absolute path as the argument test file " << endl; 
     cout << "Commands or messages  to send at the end." << endl; 
-    cout << "please pass at least 1 argument "<< endl;
+    cout << "please pass at least 1 argument if not it will automatically setup everything with a guest user "<< endl;
     cout << "if there are only commands or messages put as argument it will follow the simple config setup"<< endl;
 
     return -1;
 }
 
-void RecvMess(client & Client , tcpClientSocket & socket){
+void RecvMess(tcpClientSocket & socket){
+   
     while(true){
         string msg;
             ssize_t v;
@@ -71,6 +73,7 @@ void RecvMess(client & Client , tcpClientSocket & socket){
             if(v > 0){
                 cout << "server said: " << msg << endl;
             }
+            if (msg == "goodbye"){break;}
            
     }
 }
@@ -79,12 +82,15 @@ void RecvMess(client & Client , tcpClientSocket & socket){
 
 int main(int argc, char * argv[])
 {
+   
     vector <string> commands;
-    string serverIP ="127.0.0.6";
-    int port = 2040;
-    string userName = "AlperDaddy";
+    string serverIP ="127.0.0.1";
+    int port = 2000;
+    string userName = "guest";
     string message ="no value passed";
-    if(argc < 2){return Usage(argv[0]);}
+
+
+
     
     for(int i = 1; i <argc; i++){
         // get host
@@ -141,43 +147,44 @@ int main(int argc, char * argv[])
             i --;
             cout << "command passed " << fullcommand << endl;
             commands.push_back(fullcommand);
+            message = fullcommand;
         }
    
     }
      
       
         
-
-  
-    //int ready  = 1;
+    //THREAEEEAD
+    int i = 0;
+    bool exitcondition = true;
     cout << "Starting client example" <<endl; 
     client Client(serverIP ,userName, port );
 
     tcpClientSocket clientSocket(serverIP,port);
-    int x = 1;
-    int val = clientSocket.connectSocket(); 
-    cout << "Client Socket Value after connect = " << val << endl; 
-    while (x == 1){
-        cout << "enter a command: "; 
+    
+    int val = clientSocket.connectSocket();
+     clientSocket.sendString(userName,false);
+     clientSocket.sendString(message,false);
+    
+    cout << "Client Socket Value after connect = " << val << endl;
+    
+    thread child1(RecvMess,  ref(clientSocket));
+    while (true){
+       
+        getline(cin, message);
+       
         
         clientSocket.sendString(message,false);
-        x= 2;        
-
         
-        
-        
-        
+        if(message == "EXIT"){
+            exitcondition = false;
+            break;
+        }
+               
     }
     
 
-    clientSocket.sendString(message,false); 
-    //THREAEEEAD
-    thread child1(RecvMess, ref(Client), ref(clientSocket));
-
-    cout << "Client will try to exit now" <<endl;
-
-    
-
+ 
     //tie(msg,v) =  clientSocket.recvString(4096,false);
     //g++-8 -g tcpClientSocket.cpp chatClient.cpp client.cpp -std=c++11 -pthread -o chatClient.out && ./chatClient.out
 
