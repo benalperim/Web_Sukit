@@ -4,6 +4,7 @@
         "*.tcc": "cpp",
         "tuple": "cpp",
         "string_view": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "iostream": "cpp"
     }
 }

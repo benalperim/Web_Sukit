@@ -9,8 +9,10 @@ using namespace std;
 
 string Login::getBanner(){ //returns a string of the banner to send after authentication
     string banner = "";
+    ifstream ifstr;
+    ifstr.open("banner.txt");
     string line;
-    while(getline(ifstream("banner.txt"), line)){
+    while(getline(ifstr, line)){
         banner += line + "\n";
     }
     return banner;
@@ -18,7 +20,9 @@ string Login::getBanner(){ //returns a string of the banner to send after authen
 
 bool Login::bannedUser(string& userName){ //checks to see if the username is within the banned list. Returns True if user is banned, false elsewise
     string line;
-    while(getline(ifstream("banusers.txt"), line)){
+    ifstream ifstr;
+    ifstr.open("banusers.txt");
+    while(getline(ifstr, line)){
 		if (line.find(userName) != string::npos ){
 			return true;
 		}
@@ -26,7 +30,7 @@ bool Login::bannedUser(string& userName){ //checks to see if the username is wit
     return false;
 }
 
-void Login::userPopulate(){ 
+void Login::userPopulate(){ //Call this upon start of SERVER
     ifstream ifstr;
     ifstr.open("users.txt");
     string line;
@@ -64,15 +68,21 @@ bool Login::validateUser(string& username, string& password){ //checks to see if
 
 
 void Login::addUserName(string& userName, string& password){ //Makes a string of all the info to append to the end of the file (flagged by the app) writes to the file the line
+    if(password.length() == 0){password = "@";}
+    size_t found = password.find('@');
+    if(found != string::npos){cout << "Cannot have @ sign in password";}
+    else{
     string info = userName + " " + password + " " + "user" + " false";
     ofstream myfile("users.txt",  ios::out | ios::app);
     myfile << info;
+    }
     
 }
 
 /*int main(int argc, char * argv[])
 {
     Login login;
+    cout << login.getBanner() << endl;;
     login.userPopulate();
     return 0;
 }*/

@@ -14,9 +14,9 @@ using namespace std;
         void userPopulate();
         bool validateUser(string&, string&);
         void addUserName(string&, string&);
-
+        vector<userObject> userList;
             
         private:
-        vector<userObject> userList;
+        
         };
     

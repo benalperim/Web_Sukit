@@ -1,54 +1,50 @@
 #include "Commands.h"
+#include "Login.h"
 #include <string>
+#include <iostream>
 
 using namespace std;
 //May need other headers to be able to do functions
 //Do the check for the '/' in driver
-<<<<<<< HEAD
-void checkCommand(int command, string& arguments){
-=======
 
-
-void cs457::tcpClientSocket::init()
-void checkCommand(int& command){
->>>>>>> 8f0ba15fd7ae3c771b8974a679cdbea3afefe440
+void checkCommand(int& command, string& arguments){
     switch(command){
-        case 0: AWAY(string& arguments); break;
-        case 1: CONNECT(string& arguments); break;
-        case 2: DIE(string& arguments); break;
-        case 3: HELP(string& arguments); break;
-        case 4: INFO(string& arguments); break;
-        case 5: INVITE(string& arguments); break;
-        case 6: ISON(string& arguments); break;
-        case 7: JOIN(string& arguments); break;
-        case 8: KICK(string& arguments); break;
-        case 9: KILL(string& arguments); break;
-        case 10: KNOCK(string& arguments); break;
-        case 11: LIST(string& arguments); break;
-        case 12: MODE(string& arguments); break;
-        case 13: NICK(string& arguments); break;
-        case 14: NOTICE(string& arguments); break;
-        case 15: PART(string& arguments); break;
-        case 16: OPER(string& arguments); break;
-        case 17: PASS(string& arguments); break;
-        case 18: PING(string& arguments); break;
-        case 19: PONG(string& arguments); break;
-        case 20: PRIVMSG(string& arguments); break;
-        case 21: QUIT()string& arguments; break;
-        case 22: RESTART(string& arguments); break;
-        case 23: RULES(string& arguments); break;
-        case 24: SETNAME(string& arguments); break;
-        case 25: SILENCE(string& arguments); break;
-        case 26: TIME(string& arguments); break;
-        case 27: TOPIC(string& arguments); break;
-        case 28: USER(string& arguments); break;
-        case 29: USERHOST(string& arguments); break;
-        case 30: USERIP(string& arguments); break;
-        case 31: USERS(string& arguments); break;
-        case 32: VERSION(string& arguments); break;
-        case 33: WALLOPS(string& arguments); break;
-        case 34: WHO(string& arguments); break;
-        case 35: WHOIS(string& arguments); break;
+        case 0: AWAY(arguments); break;
+        case 1: CONNECT(arguments); break;
+        case 2: DIE(arguments); break;
+        case 3: HELP(arguments); break;
+        case 4: INFO(arguments); break;
+        case 5: INVITE(arguments); break;
+        case 6: ISON(arguments); break;
+        case 7: JOIN(arguments); break;
+        case 8: KICK(arguments); break;
+        case 9: KILL(arguments); break;
+        case 10: KNOCK(arguments); break;
+        case 11: LIST(arguments); break;
+        case 12: MODE(arguments); break;
+        case 13: NICK(arguments); break;
+        case 14: NOTICE(arguments); break;
+        case 15: PART(arguments); break;
+        case 16: OPER(arguments); break;
+        case 17: PASS(arguments); break;
+        case 18: PING(arguments); break;
+        case 19: PONG(arguments); break;
+        case 20: PRIVMSG(arguments); break;
+        case 21: QUIT(arguments); break;
+        case 22: RESTART(arguments); break;
+        case 23: RULES(arguments); break;
+        case 24: SETNAME(arguments); break;
+        case 25: SILENCE(arguments); break;
+        case 26: TIME(arguments); break;
+        case 27: TOPIC(arguments); break;
+        case 28: USER(arguments); break;
+        case 29: USERHOST(arguments); break;
+        case 30: USERIP(arguments); break;
+        case 31: USERS(arguments); break;
+        case 32: VERSION(arguments); break;
+        case 33: WALLOPS(arguments); break;
+        case 34: WHO(arguments); break;
+        case 35: WHOIS(arguments); break;
         //default: cout << "clients talk" << endl;
         //send message from one client to another
     }
@@ -67,7 +63,17 @@ void DIE(string& arguments){
 }
 
 void HELP(string& arguments){
-
+    cout << "/CONNECT: \n" << "Connect takes a target server and port, telling the server to connect to said server and port. Only allowed for Sysop or higher" << endl;
+    cout << "/DIE \n" << "Die instructs the server to shut down, only allowed by Admin" << endl;
+    cout << "/\n" << "" << endl;
+    cout << "/\n" << "" << endl;
+    cout << "/\n" << "" << endl;
+    cout << "/\n" << "" << endl;
+    cout << "/\n" << "" << endl;
+    cout << "/\n" << "" << endl;
+    cout << "/\n" << "" << endl;
+    cout << "/\n" << "" << endl;
+    cout << "/\n" << "" << endl;
 }
 
 void INFO(string& arguments){
@@ -75,6 +81,9 @@ void INFO(string& arguments){
 }
 
 void INVITE(string& arguments){
+    string nickname;
+    int channel;
+    istringstream ss(arguments);
 
 }
 
