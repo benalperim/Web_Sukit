@@ -7,6 +7,8 @@
 #include "tcpUserSocket.h"
 #include "tcpServerSocket.h"
 #include "Login.h"
+#include "Parser.h"
+
 using namespace std;
 
 bool ready = true; 
@@ -95,7 +97,6 @@ int main(int argc, char * argv[])
     }
 
     
-
     for (auto& t: threadList)
     {
         t.get()->join();
