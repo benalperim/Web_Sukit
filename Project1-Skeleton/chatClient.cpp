@@ -91,7 +91,7 @@ int main(int argc, char * argv[])
     string userName = "guest";
     string message ="no value passed";
 
-
+    //cout << argv[1] << " "<< argv[2]<< endl;
 
     
     for(int i = 1; i <argc; i++){
@@ -107,7 +107,7 @@ int main(int argc, char * argv[])
         }
         // get port
         if(strcmp(argv[i] , "-p") == 0){
-            port  = stoi(argv[i +1 ]);
+            port  = stoi(argv[i + 1]);
             cout << "port " << port << endl;
         }
         //get config setup config 

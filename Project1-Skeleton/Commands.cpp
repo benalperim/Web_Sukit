@@ -50,10 +50,10 @@ void Commands::checkCommand(int& command, string& arguments){
         //send message from one client to another
     }
 }
-void Commands::populateChatRoomUser(string& username, cs457::tcpUserSocket& socket){
+void Commands::populateChatRoomUser(string& username, cs457::tcpUserSocket& suckit){
     chatRoomUser user;
     user.name = username;
-    user.socket = socket; //I DONT KNOW WHY THIS GETS MAD
+    user.socket = suckit; //I DONT KNOW WHY THIS GETS MAD
     CRU.push_back(user);
 }
 
