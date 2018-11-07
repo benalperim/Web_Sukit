@@ -53,11 +53,11 @@ vector<string> testFile(string testFile , vector <string> & commands){
 
 int Usage(char* arg0){
     cout << "When you are passing arguments please pass in the order of " << endl;
-    cout << "-h hostname (if applicable) " << endl; 
-    cout << "-u username (if applicable) " << endl; 
-    cout << "-p server port (if applicable) " << endl; 
+    cout << "-h hostname (if applicable) This is the IP address of the host, Default is set to 127.0.0.1" << endl; 
+    cout << "-u username (if applicable) This is the Username you wish to be logged in as, Will be prompted if not given in later screen" << endl; 
+    cout << "-p server port (if applicable) This is the port you with to take on the Server, Will be given a default if not specified" << endl; 
     cout << "-c configuarionfile (if applicable) please put the file under Web_Sukit folder or give absolute path as the argument" << endl;  
-    cout << "-t please put the file under Web_Sukit folder or give absolute path as the argument test file " << endl;  
+    cout << "-t testfile (if applicable) please put the file under Web_Sukit folder or give absolute path as the argument test file " << endl;  
     cout << "please pass at least 1 argument if not it will automatically setup everything with a guest user "<< endl;
     
 
