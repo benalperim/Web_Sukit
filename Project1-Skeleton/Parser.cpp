@@ -1,6 +1,6 @@
 #include "Parser.h"
 
-void Parser::Parse(string command , cs457::tcpUserSocket clientSocket, string username ){
+void Parser::Parse(string command , shared_ptr<cs457::tcpUserSocket> clientSocket, string username, bool & loop ){
     
     if(command.at(0) == '/'){  
         istringstream tokenStream(command);
@@ -8,24 +8,26 @@ void Parser::Parse(string command , cs457::tcpUserSocket clientSocket, string us
         string token;
         char space = ' ';
         while (getline(tokenStream, token, space)){
+             cout << "token: " << token<< endl;
             if(token.at(0)== '/'){
                 transform(token.begin(), token.end(), token.begin(), ::tolower);
             }
+             cout << "token" << token << endl;
             tokens.push_back(token);
         }
 
 
         if(tokens[0] == "/quit"){
-            QUIT(tokens , clientSocket.getSocket() , username);
+            QUIT(tokens , clientSocket , username, loop);
         }
 
-         if(tokens[0] == "/info"){
-            INFO(tokens);
-        }
+        //  if(tokens[0] == "/info"){
+        //     INFO(tokens);
+        // }
 
-         if(tokens[0] == "/help"){
-            HELP();
-        }
+        //  if(tokens[0] == "/help"){
+        //     HELP();
+        // }
     }
 }
 
@@ -41,12 +43,13 @@ void Parser::HELP(){
     cout << "/WHO \n" << "Who takes a name or part of a name.  This returns anyone who has name or part of the name in their nickname." << endl;
 }
 
-bool Parser::QUIT(vector <string> command , cs457::tcpUserSocket clientSocket , string username){
+void Parser::QUIT(vector <string> command , shared_ptr<cs457::tcpUserSocket> clientSocket , string username, bool & loop){
     
     if (command.size() >= 2){
-        clientSocket.sendString(command[1]);
+        string msg = command[1];
+        clientSocket.get()->sendString(msg);
     }
-    else{clientSocket.sendString("goodbye"); }
-    
-    clientSocket.closeSocket(); 
+    else{clientSocket.get()->sendString("goodbye"); }
+    loop = false;
+    clientSocket.get()->closeSocket(); 
 }

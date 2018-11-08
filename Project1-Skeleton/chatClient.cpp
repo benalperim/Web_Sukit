@@ -8,7 +8,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-
+#include <algorithm>
 using namespace std;
 //read the config file
 
@@ -50,7 +50,7 @@ vector<string> testFile(string testFile , vector <string> & commands){
 }
 
 
-
+bool exitcondition  = true;
 int Usage(char* arg0){
     cout << "When you are passing arguments please pass in the order of " << endl;
     cout << "-h hostname (if applicable) This is the IP address of the host, Default is set to 127.0.0.1" << endl; 
@@ -66,7 +66,7 @@ int Usage(char* arg0){
 
 void RecvMess(tcpClientSocket & socket){
    
-    while(true){
+    while(exitcondition){
         string msg;
             ssize_t v;
             tie(msg,v) =  socket.recvString(4096,true);
@@ -155,9 +155,9 @@ int main(int argc, char * argv[])
     }
      
       
-        
+    string exit = "/quit";
     //THREAEEEAD
-    bool exitcondition = true;
+
     cout << "Starting client example" <<endl; 
     
 
@@ -165,21 +165,28 @@ int main(int argc, char * argv[])
     
     int val = clientSocket.connectSocket();
     clientSocket.sendString(userName,false);
-    
+ 
      
     
     cout << "Client Socket Value after connect = " << val << endl;
     
     thread child1(RecvMess,  ref(clientSocket));
     while (true){
-        
+    
         getline(cin, message);
 
         clientSocket.sendString(message,false);
         
-        if(message == "EXIT"){
-            exitcondition = false;
-            break;
+        if(message.length() >= 5){
+            string hokuspokus = message.substr(1,4);
+           
+            transform(hokuspokus.begin(), hokuspokus.end(), hokuspokus.begin(), ::tolower);
+        
+            if(hokuspokus.compare("quit") == 0){
+               
+                exitcondition = false;
+                break;
+            }
         }               
     }
     

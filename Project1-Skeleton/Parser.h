@@ -12,12 +12,12 @@ using namespace std;
 
 class Parser{
     public:
-        void Parse(string command , cs457::tcpUserSocket clientSocket , string username); 
+        void Parse(string command , shared_ptr<cs457::tcpUserSocket> clientSocket , string username , bool & loop); 
 
         bool DIE(vector <string> command);
         bool INFO(vector <string> command);
         void HELP();
-        bool QUIT(vector <string> command, cs457::tcpUserSocket clientSocket , string username);
+        void QUIT(vector <string> command, shared_ptr<cs457::tcpUserSocket> clientSocket , string username, bool & loop);
         
     private:
 
