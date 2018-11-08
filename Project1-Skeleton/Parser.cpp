@@ -25,9 +25,9 @@ void Parser::Parse(string command , shared_ptr<cs457::tcpUserSocket> clientSocke
         //     INFO(tokens);
         // }
 
-        //  if(tokens[0] == "/help"){
-        //     HELP();
-        // }
+         if(tokens[0] == "/help"){
+             HELP();
+         }
     }
 }
 
