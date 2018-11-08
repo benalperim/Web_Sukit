@@ -37,14 +37,33 @@ bool Setup(string configFile, string& hostName, string& userName, int & port){
     return true;
 }
 
-vector<string> testFile(string testFile , vector <string> & commands){
-    
+vector<string> testFile(string testFile , vector<string> & commands){ //FIX THIS, its hard coded but i dont care
+    Commands command;
     ifstream ifstr;
     ifstr.open(testFile);
     string line;
-
+    string com , arguments;
+    vector <string> argumentsString;
+   
     while(getline(ifstr, line)){
-        commands.push_back(line);
+        istringstream ss(line);
+        ss >> com >> arguments;
+        commands.push_back(com);
+        argumentsString.push_back(arguments);
+    }
+    for(unsigned int i = 0; i < commands.size(); i ++){
+       if(commands[i].substr(1) == "Quit"){
+           command.checkCommand(21, argumentsString[i]);
+       }
+       else if(commands[i].substr(1) == "List"){
+           command.checkCommand(11, argumentsString[i]);
+       }
+       else if(commands[i].substr(1) == "Join"){
+           command.checkCommand(7, argumentsString[i]);
+       }
+       else if(commands[i].substr(1) == "Privmsg"){
+           command.checkCommand(20, argumentsString[i]);
+       }
     }
     ifstr.close();
 }
@@ -85,7 +104,7 @@ void RecvMess(tcpClientSocket & socket){
 int main(int argc, char * argv[])
 {
    
-    vector <string> commands;
+    vector<string> commands;
     string serverIP ="127.0.0.1";
     int port = 2000;
     string userName = "guest";
@@ -118,7 +137,7 @@ int main(int argc, char * argv[])
             }
          }
 
-        if(argv[i] == "-t"){
+        if(strcmp(argv[i] , "-t") == 0){
             cout << "test file passed " << argv[i+1] << endl;
             testFile(argv[i + 1], commands);
         }

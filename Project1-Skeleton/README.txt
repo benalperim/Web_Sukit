@@ -17,6 +17,17 @@ Command line arguments
 ----------------------------------------
     The compile files should handle anything needed with the command line, however if you compile and run yourself, it should handle any variation from the client side. 
 
+    the Client options are:
+
+        -h hostname
+            ~ the IP address of the host you're connecting to, 127.0.0.1 is default. 
+        -p port
+            ~ the port number of the host you're trying to go through, 2000 is default.
+        -u username
+            ~ username you want to connect as, guest is defualt.
+        -t testfile
+            ~ uses test files to call a command.
+
 
 ----------------------------------------
 File List
