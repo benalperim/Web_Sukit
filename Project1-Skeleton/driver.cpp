@@ -10,7 +10,7 @@
 #include "Parser.h"
 
 using namespace std;
-
+Parser parser;
 bool ready = true; 
 Login login;
 string user="";
@@ -30,10 +30,8 @@ int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id)
     while (cont) 
     {
         tie(msg,val) = clientSocket.get()->recvString();
-        if (msg.substr(0,4) == "EXIT"){
-            cont = false;  
-            break;
-        }
+        parser.Parse(msg , clientSocket, user , cont);
+       
         cout << "[SERVER] The user "<< user<< " is sending message " << msg << " -- With value return = " << val << endl;
         string s =  "[SERVER REPLY] The client is sending message:" + msg  + "\n"; 
         thread childT1(&cs457::tcpUserSocket::sendString,clientSocket.get(),s,true);
