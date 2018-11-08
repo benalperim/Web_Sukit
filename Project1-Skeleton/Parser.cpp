@@ -33,14 +33,15 @@ void Parser::Parse(string command , shared_ptr<cs457::tcpUserSocket> clientSocke
 
 
 void Parser::HELP(){
-    cout << "/CONNECT: \n" << "Connect takes a target server and port. Telling the server to connect to said server and port. Only allowed for Sysop or higher" << endl;
-    cout << "/DIE \n" << "Die instructs the server to shut down. Only allowed by Admin" << endl;
-    cout << "/INVITE\n" << "Invite takes a nickname and a channel name.  This invites the specified user to the specified channel." << endl;
-    cout << "/JOIN \n" << "Join takes a list of channels seperated by a ','.  This will allow the client to join the specified channels, and if the channel does not exist one is made. Channel must be a number." << endl;
-    cout << "/KILL \n" << "Kill takes a client and a comment.  This removes the client from the network with a message of why. Only allowed for Sysop or higher." << endl;
-    cout << "/PRIVMSG \n" << "Privmsg takes a message reciever and a message.  This will send the message to the inidivual you specify." << endl;
-    cout << "/QUIT \n" << "Quit removes the user from the server." << endl;
-    cout << "/WHO \n" << "Who takes a name or part of a name.  This returns anyone who has name or part of the name in their nickname." << endl;
+    string help = "";
+    help += "/CONNECT: \n Connect takes a target server and port. Telling the server to connect to said server and port. Only allowed for Sysop or higher\n";
+    help += "/DIE \n Die instructs the server to shut down. Only allowed by Admin\n";
+    help += "/INVITE\n Invite takes a nickname and a channel name.  This invites the specified user to the specified channel.\n";
+    help += "/JOIN \n Join takes a list of channels seperated by a ','.  This will allow the client to join the specified channels, and if the channel does not exist one is made. Channel must be a number.\n";
+    help += "/KILL \n Kill takes a client and a comment.  This removes the client from the network with a message of why. Only allowed for Sysop or higher.\n";
+    help += "/PRIVMSG \n Privmsg takes a message reciever and a message.  This will send the message to the inidivual you specify.\n";
+    help += "/QUIT \n Quit removes the user from the server.\n";
+    help += "/WHO \n Who takes a name or part of a name.  This returns anyone who has name or part of the name in their nickname.\n";
 }
 
 void Parser::QUIT(vector <string> command , shared_ptr<cs457::tcpUserSocket> clientSocket , string username, bool & loop){
