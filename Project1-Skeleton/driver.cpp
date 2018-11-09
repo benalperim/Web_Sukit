@@ -10,17 +10,44 @@
 #include "Parser.h"
 
 using namespace std;
+int counter = 0;
 Parser parser;
 bool ready = true; 
 Login login;
-string user="";
-string banner = login.getBanner();
+//for authentication setup
 
-ssize_t value; 
+string user="";
+ssize_t value;
+string retmsg ="uno understand";
+ssize_t authval;
+//banner 
+string banner = login.getBanner();
+//check auth
+bool Authenticated = false;
+
+
 int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id)
 {
 
     tie(user,value) = clientSocket.get()->recvString();
+    
+    while(!Authenticated){
+        if(user.compare("guest") == 0 ){
+            parser.Parse("/guest" , clientSocket, user , Authenticated);
+            
+        }
+        else {
+            string check = "please type your password: ";
+            clientSocket.get()->sendString(check);
+            tie(retmsg,authval) = clientSocket.get()->recvString();
+            cout << "revd messg" << retmsg << endl;
+            string parsestring = "/user " + retmsg;
+            cout << "send parser: " << parsestring << endl;
+            parser.Parse(parsestring , clientSocket, user , Authenticated);
+        }
+
+    }
+    
     clientSocket.get()->sendString(banner);
 
     cout << "Waiting for message from Client Thread" << id << std::endl;
@@ -33,7 +60,7 @@ int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id)
         parser.Parse(msg , clientSocket, user , cont);
        
         cout << "[SERVER] The user "<< user<< " is sending message " << msg << " -- With value return = " << val << endl;
-        string s =  "[SERVER REPLY] The client is sending message:" + msg  + "\n"; 
+        string s =  "[SERVER REPLY] The client " + user  + " is sending message:" + msg  + "\n"; 
         thread childT1(&cs457::tcpUserSocket::sendString,clientSocket.get(),s,true);
         //thread childT2(&cs457::tcpUserSocket::sendString,clientSocket.get(),msg,true);
         //thread childT3(&cs457::tcpUserSocket::sendString,clientSocket.get(),"\n",true);
@@ -66,7 +93,9 @@ int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id)
 
 int main(int argc, char * argv[])
 {
-    login.userPopulate(); //used to check valid username and password
+    parser.userPopulate();
+    //used to check valid username and password
+
     cout << "Initializing Socket" << std::endl; 
     cs457::tcpServerSocket mysocket(2000);
     cout << "Binding Socket" << std::endl; 

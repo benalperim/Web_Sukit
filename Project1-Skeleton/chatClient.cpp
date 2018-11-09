@@ -37,36 +37,36 @@ bool Setup(string configFile, string& hostName, string& userName, int & port){
     return true;
 }
 
-vector<string> testFile(string testFile , vector<string> & commands){ //FIX THIS, its hard coded but i dont care
-    Commands command;
-    ifstream ifstr;
-    ifstr.open(testFile);
-    string line;
-    string com , arguments;
-    vector <string> argumentsString;
+// vector<string> testFile(string testFile , vector<string> & commands){ //FIX THIS, its hard coded but i dont care
+//     Commands command;
+//     ifstream ifstr;
+//     ifstr.open(testFile);
+//     string line;
+//     string com , arguments;
+//     vector <string> argumentsString;
    
-    while(getline(ifstr, line)){
-        istringstream ss(line);
-        ss >> com >> arguments;
-        commands.push_back(com);
-        argumentsString.push_back(arguments);
-    }
-    for(unsigned int i = 0; i < commands.size(); i ++){
-       if(commands[i].substr(1) == "Quit"){
-           command.checkCommand(21, argumentsString[i]);
-       }
-       else if(commands[i].substr(1) == "List"){
-           command.checkCommand(11, argumentsString[i]);
-       }
-       else if(commands[i].substr(1) == "Join"){
-           command.checkCommand(7, argumentsString[i]);
-       }
-       else if(commands[i].substr(1) == "Privmsg"){
-           command.checkCommand(20, argumentsString[i]);
-       }
-    }
-    ifstr.close();
-}
+//     while(getline(ifstr, line)){
+//         istringstream ss(line);
+//         ss >> com >> arguments;
+//         commands.push_back(com);
+//         argumentsString.push_back(arguments);
+//     }
+//     for(unsigned int i = 0; i < commands.size(); i ++){
+//        if(commands[i].substr(1) == "Quit"){
+//            command.checkCommand(21, argumentsString[i]);
+//        }
+//        else if(commands[i].substr(1) == "List"){
+//            command.checkCommand(11, argumentsString[i]);
+//        }
+//        else if(commands[i].substr(1) == "Join"){
+//            command.checkCommand(7, argumentsString[i]);
+//        }
+//        else if(commands[i].substr(1) == "Privmsg"){
+//            command.checkCommand(20, argumentsString[i]);
+//        }
+//     }
+//     ifstr.close();
+// }
 
 
 bool exitcondition  = true;
@@ -139,7 +139,7 @@ int main(int argc, char * argv[])
 
         if(strcmp(argv[i] , "-t") == 0){
             cout << "test file passed " << argv[i+1] << endl;
-            testFile(argv[i + 1], commands);
+             //bool a =//testFile(argv[i + 1], commands);
         }
         //get the command
         string fullcommand = "";
@@ -185,7 +185,6 @@ int main(int argc, char * argv[])
     int val = clientSocket.connectSocket();
     clientSocket.sendString(userName,false);
  
-     
     
     cout << "Client Socket Value after connect = " << val << endl;
     
