@@ -10,11 +10,9 @@ using namespace std;
     {
         public:
         string getBanner();
-        bool bannedUser(string&);
-        void userPopulate();
-        bool validateUser(string&, string&);
+        
         void addUserName(string&, string&);
-        vector<userObject> userList;
+        
             
         private:
         

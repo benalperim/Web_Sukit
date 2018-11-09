@@ -8,7 +8,7 @@ using namespace std;
 //May need other headers to be able to do functions
 //Do the check for the '/' in driver
 
-void Commands::checkCommand(int& command, string& arguments){
+void Commands::checkCommand(int command, string& arguments){
     switch(command){
         case 0: AWAY(arguments); break;
         case 1: CONNECT(arguments); break;
@@ -50,10 +50,10 @@ void Commands::checkCommand(int& command, string& arguments){
         //send message from one client to another
     }
 }
-void Commands::populateChatRoomUser(string& username, cs457::tcpUserSocket& socket){
+void Commands::populateChatRoomUser(string& username, shared_ptr<cs457::tcpUserSocket> suckit){
     chatRoomUser user;
     user.name = username;
-    user.socket = socket; //I DONT KNOW WHY THIS GETS MAD
+    user.socket = suckit; //I DONT KNOW WHY THIS GETS MAD
     CRU.push_back(user);
 }
 
@@ -81,7 +81,8 @@ void Commands::HELP(string& arguments){
 }
 
 void Commands::INFO(string& arguments){
-    //KEY COMMAND
+    //KEY COMMAND 
+    cout << "Your mom is a whore" << endl;
 }
 
 void Commands::INVITE(string& arguments){
@@ -122,15 +123,20 @@ void Commands::JOIN(string& arguments){ // NEED socket from the user trying to j
     for(unsigned int i = 0; i < channels.size(); i++){
         auto search = chatRoom.find(stoi(channels[i])); //CHANNEL MUST BE INTEGER
         if(search != chatRoom.end()){
-
+            //let user join chat room
         }
-        /*else{
-        vector<chatRoomUser> temp;
-        //USE NICKNAME TO GET THE CRU OF THE USERNAME
-        temp.push_back();
-        chatRoom.insert({roomNumber, temp});
-        roomNumber += 1;
-        }*/
+        else{
+            cout << "lol jk we havent implemented this" << endl;
+            /*vector<chatRoomUser> temp;
+            for(unsigned int j = 0; j < CRU.size(); j++){
+                if(username == CRU[j].name){
+                //USE NICKNAME TO GET THE CRU OF THE USERNAME
+                    temp.push_back(CRU[j]);
+                    chatRoom.insert({roomNumber, temp});
+                    roomNumber += 1; //may be issue
+                }*/
+            //}
+        }
     }
     
 }
@@ -191,6 +197,9 @@ void Commands::PRIVMSG(string& arguments){ // again need the name of the person 
     for(unsigned int i = 0; i < CRU.size(); i++){
         if(to == CRU[i].name){
             //send message using CRU[i].socket
+        }
+        else{
+            cout << "user not logged on" << endl;
         }
     }
 }

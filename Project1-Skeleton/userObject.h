@@ -17,5 +17,5 @@ using namespace std;
         string banned;
         shared_ptr<cs457::tcpUserSocket> socket;
         private:
-        };
+    };
     

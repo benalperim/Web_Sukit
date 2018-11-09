@@ -37,17 +37,36 @@ bool Setup(string configFile, string& hostName, string& userName, int & port){
     return true;
 }
 
-vector<string> testFile(string testFile , vector <string> & commands){
-    
-    ifstream ifstr;
-    ifstr.open(testFile);
-    string line;
-
-    while(getline(ifstr, line)){
-        commands.push_back(line);
-    }
-    ifstr.close();
-}
+// vector<string> testFile(string testFile , vector<string> & commands){ //FIX THIS, its hard coded but i dont care
+//     Commands command;
+//     ifstream ifstr;
+//     ifstr.open(testFile);
+//     string line;
+//     string com , arguments;
+//     vector <string> argumentsString;
+   
+//     while(getline(ifstr, line)){
+//         istringstream ss(line);
+//         ss >> com >> arguments;
+//         commands.push_back(com);
+//         argumentsString.push_back(arguments);
+//     }
+//     for(unsigned int i = 0; i < commands.size(); i ++){
+//        if(commands[i].substr(1) == "Quit"){
+//            command.checkCommand(21, argumentsString[i]);
+//        }
+//        else if(commands[i].substr(1) == "List"){
+//            command.checkCommand(11, argumentsString[i]);
+//        }
+//        else if(commands[i].substr(1) == "Join"){
+//            command.checkCommand(7, argumentsString[i]);
+//        }
+//        else if(commands[i].substr(1) == "Privmsg"){
+//            command.checkCommand(20, argumentsString[i]);
+//        }
+//     }
+//     ifstr.close();
+// }
 
 
 bool exitcondition  = true;
@@ -85,13 +104,13 @@ void RecvMess(tcpClientSocket & socket){
 int main(int argc, char * argv[])
 {
    
-    vector <string> commands;
+    vector<string> commands;
     string serverIP ="127.0.0.1";
     int port = 2000;
     string userName = "guest";
     string message ="no value passed";
 
-
+    //cout << argv[1] << " "<< argv[2]<< endl;
 
     
     for(int i = 1; i <argc; i++){
@@ -107,7 +126,7 @@ int main(int argc, char * argv[])
         }
         // get port
         if(strcmp(argv[i] , "-p") == 0){
-            port  = stoi(argv[i +1 ]);
+            port  = stoi(argv[i + 1]);
             cout << "port " << port << endl;
         }
         //get config setup config 
@@ -118,9 +137,9 @@ int main(int argc, char * argv[])
             }
          }
 
-        if(argv[i] == "-t"){
+        if(strcmp(argv[i] , "-t") == 0){
             cout << "test file passed " << argv[i+1] << endl;
-            testFile(argv[i + 1], commands);
+             //bool a =//testFile(argv[i + 1], commands);
         }
         //get the command
         string fullcommand = "";
@@ -166,7 +185,6 @@ int main(int argc, char * argv[])
     int val = clientSocket.connectSocket();
     clientSocket.sendString(userName,false);
  
-     
     
     cout << "Client Socket Value after connect = " << val << endl;
     

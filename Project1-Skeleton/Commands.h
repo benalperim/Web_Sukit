@@ -10,13 +10,13 @@ class Commands
 {
     struct chatRoomUser{
         string name;
-        cs457::tcpUserSocket socket;
+        shared_ptr<cs457::tcpUserSocket> socket;
     };
 
 
     public:
-    void populateChatRoomUser(string&, cs457::tcpUserSocket&);
-    void checkCommand(int&, string&);
+    void populateChatRoomUser(string&, shared_ptr<cs457::tcpUserSocket>);
+    void checkCommand(int, string&);
     void AWAY(string&);
     void CONNECT(string&);
     void DIE(string&);
