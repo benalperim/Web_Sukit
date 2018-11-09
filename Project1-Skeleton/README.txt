@@ -10,7 +10,8 @@ Compile
         run 
     Client:
         runClient
-
+    Test: 
+        runClientTest# (# of test file to run)
 
 ----------------------------------------
 Command line arguments
