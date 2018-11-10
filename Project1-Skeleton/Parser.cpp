@@ -8,7 +8,7 @@ void Parser::Parse(string command , shared_ptr<cs457::tcpUserSocket> clientSocke
         string token;
         char space = ' ';
         while (getline(tokenStream, token, space)){
-             cout << "token: " << token<< endl;
+             //cout << "token: " << token<< endl;
             if(token.at(0)== '/'){
                 transform(token.begin(), token.end(), token.begin(), ::tolower);
             }
@@ -67,11 +67,14 @@ void Parser::DIE(string&  username){// THIS METHOD DOES NOT WORK IN THE SLIGHTES
         }
     }
     if(allowed){
-        for(unsigned int i = 0; i < messagingList.size(); i ++){
+        cout <<  "size of users " << messagingList.size() << endl;
+        for(int i = 0; i < messagingList.size(); i ++){
         sleep(1);
         messagingList[i].getSocket()->sendString("Server is shutting down.");// this doesnt work
+        sleep(1);
         messagingList[i].getSocket()->sendString("goodbye");
         }
+        sleep(1);
         exit(-1);
     }
 }

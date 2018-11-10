@@ -83,6 +83,8 @@ bool readTestFile(string& testFile){
 }
 
 bool exitcondition  = true;
+   
+bool quit = false;
 int Usage(char* arg0){
     cout << "When you are passing arguments please pass in the order of " << endl;
     cout << "-h hostname (if applicable) This is the IP address of the host, Default is set to 127.0.0.1" << endl; 
@@ -96,7 +98,7 @@ int Usage(char* arg0){
     return -1;
 }
 
-void RecvMess(tcpClientSocket & socket){
+void RecvMess(tcpClientSocket & socket ,bool & quit){
    
     while(exitcondition){
         string msg;
@@ -107,11 +109,15 @@ void RecvMess(tcpClientSocket & socket){
                 cout << msg <<endl;
             }
 
-            if (msg == "goodbye"){break;}
+            if (msg.compare("goodbye") == 0 ){
+
+                cout << "exit condition satisfied: " << endl;
+                quit = true;
+                break;
+            }
            
     }
 }
-
 
 
 int main(int argc, char * argv[])
@@ -229,9 +235,9 @@ int main(int argc, char * argv[])
      
     
     cout << "Client Socket Value after connect = " << val << endl;
-    
-    thread child1(RecvMess,  ref(clientSocket));
-    while (true){
+ 
+    thread child1(RecvMess,  ref(clientSocket) , ref(quit) );
+    while (!quit){
     
         getline(cin, message);
 
@@ -246,6 +252,7 @@ int main(int argc, char * argv[])
                 if(hokuspokus.compare("quit") == 0){
                 
                     exitcondition = false;
+                    quit =true; 
                     break;
                 }
             }

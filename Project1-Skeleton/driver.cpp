@@ -14,11 +14,12 @@ using namespace std;
 bool ready = true; 
 
 //for authentication setup
+Parser parser;
+Login login;
 
 
 
-
-int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id , Parser parser, Login login )
+int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id   )
 {
     string user="";
     ssize_t value;
@@ -93,12 +94,12 @@ int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id , Parser parser
 
 int main(int argc, char * argv[])
 {
-    Parser parser;
+   
     //used to check valid username and password
     parser.userPopulate();
     //fill chat rooms 
     parser.GetChatRooms();
-    Login login;
+    
     cout << "Initializing Socket" << std::endl; 
     cs457::tcpServerSocket mysocket(2000);
     cout << "Binding Socket" << std::endl; 
@@ -117,7 +118,7 @@ int main(int argc, char * argv[])
         tie(clientSocket,val) = mysocket.acceptSocket();
         cout << "value for accept is " << val << std::endl; 
         cout << "Socket Accepted" << std::endl; 
-        unique_ptr<thread> t = make_unique<thread>(cclient,clientSocket,id, parser , login); 
+        unique_ptr<thread> t = make_unique<thread>(cclient,clientSocket,id); 
         threadList.push_back(std::move(t)); 
         
         id++; //not the best way to go about it. 
