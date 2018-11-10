@@ -16,7 +16,7 @@ Compile
 ----------------------------------------
 Command line arguments
 ----------------------------------------
-    The compile files should handle anything needed with the command line, however if you compile and run yourself, it should handle any variation from the client side. 
+    The compile files (run, runClient, runGuest, runClientTest_) should handle anything needed with the command line, however if you compile and run yourself, it should handle any variation from the client side. 
 
     the Client options are:
 
@@ -62,21 +62,25 @@ File List
         Parcer(.cpp/.h)
             - This file parses the command given along with handling the arguments for each command.  This is the new and approved version of Commands.* due to the issue of parsing before instead of after.  most of the functions from Login.* and Command.* is made into this function.
         tcpClientSocket(.cpp/.h)
-            - This file was one of the provided files that contains methods to spawn a socket for the client. Has methods to open and close the given socket, along with methods to send and recieve strings on the given socket.
+            - This file was one of the provded files that is the old version of of the tcpUserSocket.
         tcpServerSocket(.cpp/.h)
             - This file was one of the provided files that contains methods to spawn a socket for the server.  Has methods to set the socket options, to bind the socket, to listen for connections, and accepting connection requests.     
         tcpUserSocket(.cpp/.h)
-            - ASK ALPER IM NOT QUITE CERTAIN WHAT THIS FILE DOES 
+            - This file was one of the provided files that contains methods to spawn a socket for the client. Has methods to open and close the given socket, along with methods to send and recieve strings on the given socket.
         userObject(.h)
             - This is an object file that creates and object name userObject, that contains the contents of the users.txt file.  Each object holds the username, password, level of permission, and if they are banned or not. 
         utils(.h)
             - This file was one of the provided files that contains a singular method to be able to round up to the nearest multiple of a number.
         
     other:
-        Makefile
-            - compiles the clients code, to run a client see above (command line)
+        runClient
+            - compiles and runs a client with the Admin JakeBaby
+        runGuest
+            - compiles and runs a client with no user specification therefore defaulted to a unique guest
+        runClientTest_
+            - compiles and runs a client with the corresponding testfile
         run
-            - compiles and runs the Server.
+            - compiles and runs the Server
         .gitignore
             - includes files to ignore for our git repository
 
