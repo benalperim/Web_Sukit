@@ -1,5 +1,5 @@
 Username Password level banned
 fortega cnt4713 sysop false
-AlperDaddy @ Admin false
-JakeBaby 1234 user false
+AlperDaddy @ user false
+JakeBaby 1234 Admin false
 GetGudKid yolo user true
