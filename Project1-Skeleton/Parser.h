@@ -51,6 +51,6 @@ class Parser{
         vector<chatUser> messagingList;
         vector<userObject> userList;
         vector<channel> ChannelList;
-        vector<chatUser> generalChat;
+        //vector<chatUser> generalChat;
         
 };

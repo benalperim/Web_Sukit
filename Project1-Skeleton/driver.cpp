@@ -10,24 +10,24 @@
 #include "Parser.h"
 
 using namespace std;
-int counter = 0;
-Parser parser;
+
 bool ready = true; 
-Login login;
+
 //for authentication setup
 
-string user="";
-ssize_t value;
-string retmsg ="uno understand";
-ssize_t authval;
-//banner 
-string banner = login.getBanner();
-//check auth
-bool Authenticated = false;
 
 
-int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id)
+
+int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id , Parser parser, Login login )
 {
+    string user="";
+    ssize_t value;
+    string retmsg ="uno understand";
+    ssize_t authval;
+    //banner 
+    string banner = login.getBanner();
+    //check auth
+    bool Authenticated = false;
 
     tie(user,value) = clientSocket.get()->recvString();
     
@@ -93,11 +93,12 @@ int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id)
 
 int main(int argc, char * argv[])
 {
+    Parser parser;
     //used to check valid username and password
     parser.userPopulate();
     //fill chat rooms 
     parser.GetChatRooms();
-
+    Login login;
     cout << "Initializing Socket" << std::endl; 
     cs457::tcpServerSocket mysocket(2000);
     cout << "Binding Socket" << std::endl; 
@@ -116,7 +117,7 @@ int main(int argc, char * argv[])
         tie(clientSocket,val) = mysocket.acceptSocket();
         cout << "value for accept is " << val << std::endl; 
         cout << "Socket Accepted" << std::endl; 
-        unique_ptr<thread> t = make_unique<thread>(cclient,clientSocket,id); 
+        unique_ptr<thread> t = make_unique<thread>(cclient,clientSocket,id, parser , login); 
         threadList.push_back(std::move(t)); 
         
         id++; //not the best way to go about it. 

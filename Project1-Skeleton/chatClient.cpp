@@ -238,14 +238,16 @@ int main(int argc, char * argv[])
         clientSocket.sendString(message,false);
         
         if(message.length() >= 5){
-            string hokuspokus = message.substr(1,4);
-           
-            transform(hokuspokus.begin(), hokuspokus.end(), hokuspokus.begin(), ::tolower);
-        
-            if(hokuspokus.compare("quit") == 0){
-               
-                exitcondition = false;
-                break;
+            if(message.at(0) == '/'){
+                string hokuspokus = message.substr(1,4);
+                cout << "hokuspokus= " << hokuspokus << endl;
+                transform(hokuspokus.begin(), hokuspokus.end(), hokuspokus.begin(), ::tolower);
+            
+                if(hokuspokus.compare("quit") == 0){
+                
+                    exitcondition = false;
+                    break;
+                }
             }
         }               
     }

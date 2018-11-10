@@ -68,8 +68,8 @@ void Parser::DIE(string&  username){// THIS METHOD DOES NOT WORK IN THE SLIGHTES
     }
     if(allowed){
         for(unsigned int i = 0; i < messagingList.size(); i ++){
-        messagingList[i].getSocket()->sendString("Server is shutting down.");
         sleep(1);
+        messagingList[i].getSocket()->sendString("Server is shutting down.");// this doesnt work
         messagingList[i].getSocket()->sendString("goodbye");
         }
         exit(-1);
@@ -95,7 +95,7 @@ void Parser::INFO(shared_ptr<cs457::tcpUserSocket> clientSocket){
 }
 
 void Parser::JOIN(){
-    //CANNOT DO THIS UNTIL CHAT ROOMS
+    
 }
 
 void Parser::PRIVMSG(vector<string>& tokens, string& username){
@@ -116,8 +116,26 @@ void Parser::QUIT(vector <string> command , shared_ptr<cs457::tcpUserSocket> cli
     if (command.size() >= 2){
         string msg = command[1];
         clientSocket.get()->sendString(msg);
+        for( int j = 0; j < messagingList.size(); j++){
+            if(username.compare(messagingList[j].getNickname()) == 0){
+                cout << "matched at " << j << std::endl;
+                messagingList.erase(messagingList.begin()+j);
+            }
+        }
+        sleep(1);
     }
-    else{clientSocket.get()->sendString("goodbye"); }
+
+    else{
+        clientSocket.get()->sendString("goodbye"); 
+        for( int j = 0; j < messagingList.size(); j++){
+                if(username.compare(messagingList[j].getNickname()) == 0){
+                    cout << "matched at " << j << std::endl;
+                    messagingList.erase(messagingList.begin()+j);
+                }
+            }
+        sleep(1);
+    }
+
     loop = false;
     clientSocket.get()->closeSocket(); 
 }
@@ -132,7 +150,6 @@ chatUser Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string & 
     chatUser user(username , passwrd, clientSocket);
     messagingList.push_back(user); //changed
     Authval = true;
-    generalChat.push_back(user);
 
     return user;
 }
@@ -149,7 +166,6 @@ chatUser Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string & 
         chatUser user(username , pasword, clientSocket);
         messagingList.push_back(user); //changed
         Authval = true;
-        generalChat.push_back(user);
         return true;
     }
 
