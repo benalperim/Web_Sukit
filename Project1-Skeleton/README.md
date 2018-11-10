@@ -51,18 +51,20 @@ File List
             - This file initiates a client, creates a socket inbetween the server and the client.  Send and recieves messages from and to the server.  The recieve is threaded so it can recieve multiple messages.
         client(.h)
             - Contains the necessities for a client, including a way to store hostname, username, and port number
-        Commands(.cpp/.h)
+        Commands(.cpp/.h)(graveyard)
             - Contains a switch statement with every chat command that we should implement.  It switches on an integer value assigned to it in both the server and the client. 
               Holds values that are used by these commands as well, such as our chatRoom storage.
         driver(.cpp)
             - This is the driver for the server of our chat application.  This will run/create clients for every client spawned along with threading each socket. 
-        Login(.cpp/.h)
+        Login(.cpp/.h)(mostly graveyard)
             - This file contains a way to check and authenticate users, along with writing new users to users.txt file.  While authenticating it will check if the indiviudal username is on the 
               banned user list of banusers.txt.  Lastly this file contains the IO to be able to read and print out our banner from banner.txt
+        Parcer(.cpp/.h)
+            - This file parses the command given along with handling the arguments for each command.  This is the new and approved version of Commands.* due to the issue of parsing before instead of after.  most of the functions from Login.* and Command.* is made into this function.
         tcpClientSocket(.cpp/.h)
             - This file was one of the provided files that contains methods to spawn a socket for the client. Has methods to open and close the given socket, along with methods to send and recieve strings on the given socket.
         tcpServerSocket(.cpp/.h)
-            - This file was one of the provided files that contains methods to spawn a socket for the server.  Has methods to set the socket options, to bind the socket, to listen for connections, and accepting connection requests.              
+            - This file was one of the provided files that contains methods to spawn a socket for the server.  Has methods to set the socket options, to bind the socket, to listen for connections, and accepting connection requests.     
         tcpUserSocket(.cpp/.h)
             - ASK ALPER IM NOT QUITE CERTAIN WHAT THIS FILE DOES 
         userObject(.h)

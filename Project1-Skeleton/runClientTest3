@@ -1,0 +1,1 @@
+g++ -g tcpClientSocket.cpp chatClient.cpp -pthread -o chatClient.out  && ./chatClient.out -p 2000 -t testFile3.txt

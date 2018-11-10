@@ -1,6 +1,5 @@
 #include <iostream> 
 #include "tcpClientSocket.h"
-#include "client.h"
 #include "Commands.h"
 #include <thread> 
 #include <stdio.h>
@@ -11,6 +10,7 @@
 #include <algorithm>
 using namespace std;
 //read the config file
+vector <string> testFileCommands;
 
 bool Setup(string configFile, string& hostName, string& userName, int & port){
     string type, data;
@@ -37,37 +37,50 @@ bool Setup(string configFile, string& hostName, string& userName, int & port){
     return true;
 }
 
-// vector<string> testFile(string testFile , vector<string> & commands){ //FIX THIS, its hard coded but i dont care
-//     Commands command;
-//     ifstream ifstr;
-//     ifstr.open(testFile);
-//     string line;
-//     string com , arguments;
-//     vector <string> argumentsString;
+/*vector<string> testFile(string testFile , vector<string> & commands){ //FIX THIS, its hard coded but i dont care
+    ifstream ifstr;
+    ifstr.open(testFile);
+    string line;
+    string com , arguments;
+    vector <string> argumentsString;
    
-//     while(getline(ifstr, line)){
-//         istringstream ss(line);
-//         ss >> com >> arguments;
-//         commands.push_back(com);
-//         argumentsString.push_back(arguments);
-//     }
-//     for(unsigned int i = 0; i < commands.size(); i ++){
-//        if(commands[i].substr(1) == "Quit"){
-//            command.checkCommand(21, argumentsString[i]);
-//        }
-//        else if(commands[i].substr(1) == "List"){
-//            command.checkCommand(11, argumentsString[i]);
-//        }
-//        else if(commands[i].substr(1) == "Join"){
-//            command.checkCommand(7, argumentsString[i]);
-//        }
-//        else if(commands[i].substr(1) == "Privmsg"){
-//            command.checkCommand(20, argumentsString[i]);
-//        }
-//     }
-//     ifstr.close();
-// }
-
+    while(getline(ifstr, line)){
+        istringstream ss(line);
+        ss >> com >> arguments;
+        commands.push_back(com);
+        argumentsString.push_back(arguments);
+    }
+    for(unsigned int i = 0; i < commands.size(); i ++){
+       if(commands[i] == "/Quit"){
+           command.QUIT(argumentsString[i]);
+       }
+       else if(commands[i] == "/List"){
+           command.LIST(argumentsString[i]);
+       }
+       else if(commands[i] == "/Join"){
+           command.checkCommand(7, argumentsString[i]);
+       }
+       else if(commands[i] == "/Privmsg"){
+           command.checkCommand(20, argumentsString[i]);
+       }
+    }
+    ifstr.close();
+}*/
+bool readTestFile(string& testFile){
+    ifstream ifstr;
+    ifstr.open(testFile);
+    if(ifstr.is_open()){
+    string line;
+    string command;
+    while(getline(ifstr, line)){
+        istringstream ss(line);
+        ss >> command;
+        testFileCommands.push_back(command);
+    }
+    return true;
+    }
+    else{return false;}
+}
 
 bool exitcondition  = true;
 int Usage(char* arg0){
@@ -109,6 +122,7 @@ int main(int argc, char * argv[])
     int port = 2000;
     string userName = "guest";
     string message ="no value passed";
+    bool TEST = false;
 
     //cout << argv[1] << " "<< argv[2]<< endl;
 
@@ -139,7 +153,8 @@ int main(int argc, char * argv[])
 
         if(strcmp(argv[i] , "-t") == 0){
             cout << "test file passed " << argv[i+1] << endl;
-             //bool a =//testFile(argv[i + 1], commands);
+            string filename = argv[i + 1];
+            TEST = readTestFile(filename);
         }
         //get the command
         string fullcommand = "";
@@ -184,7 +199,34 @@ int main(int argc, char * argv[])
     
     int val = clientSocket.connectSocket();
     clientSocket.sendString(userName,false);
+    //sleep(1);
  
+    if(TEST){
+        string testMsg;
+        ssize_t testValue;
+
+        for(unsigned int i = 0; i < testFileCommands.size(); i++){
+            sleep(1);
+            clientSocket.sendString(testFileCommands[i], false);
+            tie(testMsg, testValue) = clientSocket.recvString(4096, true);
+        }
+        /*cout << "Sending password: " <<testFileCommands[0] << endl;
+        clientSocket.sendString(testFileCommands[0],false); //sends password but never gets there 
+        cout << "recieving Message: " << endl;
+        tie(testMsg,testValue) =  clientSocket.recvString(4096,true);
+        sleep(3);
+        
+        
+
+        for(unsigned int i = 1; i < testFileCommands.size(); i++){
+            sleep(1);
+            cout << "SENDING: " << testFileCommands[i] << endl;
+            clientSocket.sendString(testFileCommands[i],false);
+            cout << "RECIEVING: " << endl;
+            tie(testMsg,testValue) =  clientSocket.recvString(4096,true);
+        }*/
+    }
+     
     
     cout << "Client Socket Value after connect = " << val << endl;
     

@@ -25,7 +25,7 @@ class Parser{
         bool USER(vector <string> command , shared_ptr<cs457::tcpUserSocket> clientSocket, string username,  bool & Authval);
         bool bannedUser(string&);
         void userPopulate();
-        bool validateUser(string & username, string& password );
+        bool validateUser(string & username, string& password);
     private:
         int  counter = 0;
         vector<userObject> userList;
