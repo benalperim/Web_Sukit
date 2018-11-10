@@ -1,4 +1,3 @@
-Username Password level banned
 fortega cnt4713 sysop false
 AlperDaddy @ user false
 JakeBaby 1234 Admin false

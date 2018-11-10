@@ -29,11 +29,11 @@ class Parser{
 
         void DIE(string&  username);
         void INFO(shared_ptr<cs457::tcpUserSocket> clientSocket);
-        void JOIN();
         void HELP(shared_ptr<cs457::tcpUserSocket> clientSocket);
         void PRIVMSG(vector<string> &, string& username);
         void QUIT(vector <string> command, shared_ptr<cs457::tcpUserSocket> clientSocket , string username, bool & loop);
-        bool JOIN(vector <string> command, shared_ptr<cs457::tcpUserSocket> clientSocket , string username, bool & loop);
+        void LIST(shared_ptr<cs457::tcpUserSocket> clientSocket );
+        void JOIN(vector <string> command, shared_ptr<cs457::tcpUserSocket> clientSocket , string username);
 
 
         bool USER(vector <string> command , shared_ptr<cs457::tcpUserSocket> clientSocket, string username,  bool & Authval);

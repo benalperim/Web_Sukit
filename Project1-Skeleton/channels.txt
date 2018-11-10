@@ -1,4 +1,3 @@
-roomname topic password
-OtegasBounceHouse Cpp @
+OrtegasBounceHouse Cpp @
 TurkishRevolution coup motherland
 SnoozeFest Zzz pillow
