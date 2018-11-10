@@ -37,25 +37,34 @@ void Parser::Parse(string command , shared_ptr<cs457::tcpUserSocket> clientSocke
         }
 
         if(tokens[0] == "/die"){
+            cout << "hit die check privilage" << endl;
             DIE(username); // USERNAME IS STORED WRONG ASK ALPER
         }
 
         if(tokens[0] == "/privmsg"){
+            cout << "priv msg" << endl;
             PRIVMSG(tokens, username);
         }
 
         if(tokens[0] == "/join"){
-            JOIN();
+             cout << "hit join" << endl;
+            JOIN(tokens , clientSocket , username);
         }
 
         if(tokens[0] == "/info"){
+             cout << "hit info" << endl;
             INFO(clientSocket);
+        }
+
+        if(tokens[0] == "/list"){
+            cout << "hit list" << endl;
+            LIST(clientSocket);
         }
     }
 }
 
 
-void Parser::DIE(string&  username){// THIS METHOD DOES NOT WORK IN THE SLIGHTEST BECUASE USERNAME GIVEN IS WRONG
+void Parser::DIE(string&  username){
     bool allowed = false;
     cout << username << endl;
     for(unsigned int j = 0; j < userList.size(); j++){
@@ -70,7 +79,7 @@ void Parser::DIE(string&  username){// THIS METHOD DOES NOT WORK IN THE SLIGHTES
         cout <<  "size of users " << messagingList.size() << endl;
         for(int i = 0; i < messagingList.size(); i ++){
         sleep(1);
-        messagingList[i].getSocket()->sendString("Server is shutting down.");// this doesnt work
+        messagingList[i].getSocket()->sendString("Server is shutting down.");
         sleep(1);
         messagingList[i].getSocket()->sendString("goodbye");
         }
@@ -78,6 +87,7 @@ void Parser::DIE(string&  username){// THIS METHOD DOES NOT WORK IN THE SLIGHTES
         exit(-1);
     }
 }
+
 
 void Parser::HELP(shared_ptr<cs457::tcpUserSocket> clientSocket){
     string help = "";
@@ -92,14 +102,32 @@ void Parser::HELP(shared_ptr<cs457::tcpUserSocket> clientSocket){
     clientSocket.get()->sendString(help);
 }
 
+
 void Parser::INFO(shared_ptr<cs457::tcpUserSocket> clientSocket){
     string about = "This Chatting Application is brought to you by a Turkish Delight and Baby Blue  (Alper K. and Jacob T.)";
     clientSocket.get()->sendString(about);
 }
 
-void Parser::JOIN(){
+
+void Parser::JOIN(vector <string> command, shared_ptr<cs457::tcpUserSocket> clientSocket , string username){
     
 }
+
+
+void Parser::LIST(shared_ptr<cs457::tcpUserSocket> clientSocket){
+    string chatRoomInfo = "";
+    for(int i = 0; i < ChannelList.size(); i++ ){
+        chatRoomInfo += ChannelList.at(i).roomname + " with topic " + ChannelList.at(i).topic + " ";
+        if(ChannelList.at(i).password.compare("@") == 0 ){
+            chatRoomInfo += " pubic chat \n";
+        }
+        else 
+            chatRoomInfo += " password Protected chat \n";
+    } 
+     clientSocket.get()->sendString(chatRoomInfo);
+
+}
+
 
 void Parser::PRIVMSG(vector<string>& tokens, string& username){
     string message = "From [" + username + "]: ";
@@ -164,7 +192,7 @@ chatUser Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string & 
         pasword =command[1];
     }
     cout << "uname  " << username << std::endl;
-     cout << "paswrd  " << pasword << std::endl;
+    cout << "paswrd  " << pasword << std::endl;
     if(validateUser(username , command[1])){
         chatUser user(username , pasword, clientSocket);
         messagingList.push_back(user); //changed
@@ -175,6 +203,22 @@ chatUser Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string & 
     return false;
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//HELPER MTHODS
 
 vector<channel> Parser::GetChatRooms(){
     ifstream ifstr;
@@ -193,25 +237,7 @@ vector<channel> Parser::GetChatRooms(){
     }
     
     return ChannelList;
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-//###################################################################################################################################################
-
 
 bool Parser::bannedUser(string& userName){ //checks to see if the username is within the banned list. Returns True if user is banned, false elsewise
     string line;
