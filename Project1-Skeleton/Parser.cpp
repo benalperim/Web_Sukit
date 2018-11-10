@@ -27,18 +27,54 @@ void Parser::Parse(string command , shared_ptr<cs457::tcpUserSocket> clientSocke
              GUEST(clientSocket , username , loop);
         }
 
-        else if(tokens[0] == "/help"){
-            cout << "hit help" << std::endl;
-             HELP( clientSocket);
+        if(tokens[0] == "/help"){
+             HELP(clientSocket);
         }
 
         else if(tokens[0] == "/user"){
             cout << "hit user" << endl;
             USER(tokens, clientSocket, username, loop);
         }
+
+        if(tokens[0] == "/die"){
+            DIE(username); // USERNAME IS STORED WRONG ASK ALPER
+        }
+
+        if(tokens[0] == "/privmsg"){
+            PRIVMSG(tokens, username);
+        }
+
+        if(tokens[0] == "/join"){
+            JOIN();
+        }
+
+        if(tokens[0] == "/info"){
+            INFO(clientSocket);
+        }
     }
 }
 
+
+void Parser::DIE(string&  username){// THIS METHOD DOES NOT WORK IN THE SLIGHTEST BECUASE USERNAME GIVEN IS WRONG
+    bool allowed = false;
+    cout << username << endl;
+    for(unsigned int j = 0; j < userList.size(); j++){
+        if(username.compare(userList[j].userName) == 0){
+            string admin = "Admin";
+            if(admin.compare(userList[j].level) == 0){
+                allowed = true;
+            }
+        }
+    }
+    if(allowed){
+        for(unsigned int i = 0; i < messagingList.size(); i ++){
+        messagingList[i].getSocket()->sendString("Server is shutting down.");
+        sleep(1);
+        messagingList[i].getSocket()->sendString("goodbye");
+        }
+        exit(-1);
+    }
+}
 
 void Parser::HELP(shared_ptr<cs457::tcpUserSocket> clientSocket){
     string help = "";
@@ -53,6 +89,28 @@ void Parser::HELP(shared_ptr<cs457::tcpUserSocket> clientSocket){
     clientSocket.get()->sendString(help);
 }
 
+void Parser::INFO(shared_ptr<cs457::tcpUserSocket> clientSocket){
+    string about = "This Chatting Application is brought to you by a Turkish Delight and Baby Blue  (Alper K. and Jacob T.)";
+    clientSocket.get()->sendString(about);
+}
+
+void Parser::JOIN(){
+    //CANNOT DO THIS UNTIL CHAT ROOMS
+}
+
+void Parser::PRIVMSG(vector<string>& tokens, string& username){
+    string message = "From [" + username + "]: ";
+    for(unsigned int i = 2; i < tokens.size(); i++){ // makes string to send to user
+        message += tokens[i] + " ";
+    }
+    cout << message << endl;
+    for(unsigned int j = 0; j < messagingList.size(); j++){ //searches user list in order to find which socket to send to 
+        if(tokens[1].compare(messagingList[j].getNickname()) == 0){
+            messagingList[j].getSocket()->sendString(message);
+        }
+    }
+}
+
 void Parser::QUIT(vector <string> command , shared_ptr<cs457::tcpUserSocket> clientSocket , string username, bool & loop){
     
     if (command.size() >= 2){
@@ -64,7 +122,6 @@ void Parser::QUIT(vector <string> command , shared_ptr<cs457::tcpUserSocket> cli
     clientSocket.get()->closeSocket(); 
 }
 
-
 chatUser Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string & username, bool & Authval){
     
     string passwrd = "-1";
@@ -73,6 +130,7 @@ chatUser Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string & 
     counter++;
     
     chatUser user(username , passwrd, clientSocket);
+    messagingList.push_back(user); //changed
     Authval = true;
     generalChat.push_back(user);
 
@@ -89,6 +147,7 @@ chatUser Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string & 
      cout << "paswrd  " << pasword << std::endl;
     if(validateUser(username , command[1])){
         chatUser user(username , pasword, clientSocket);
+        messagingList.push_back(user); //changed
         Authval = true;
         generalChat.push_back(user);
         return true;
@@ -132,7 +191,7 @@ vector<channel> Parser::GetChatRooms(){
 
 
 
-
+//###################################################################################################################################################
 
 
 bool Parser::bannedUser(string& userName){ //checks to see if the username is within the banned list. Returns True if user is banned, false elsewise
