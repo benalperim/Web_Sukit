@@ -40,9 +40,9 @@ int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id)
             string check = "please type your password: ";
             clientSocket.get()->sendString(check);
             tie(retmsg,authval) = clientSocket.get()->recvString();
-            cout << "revd messg" << retmsg << endl;
+            cout << "recieved messg" << retmsg << endl;
             string parsestring = "/user " + retmsg;
-            cout << "send parser: " << parsestring << endl;
+            cout << "send  to parser: " << parsestring << endl;
             parser.Parse(parsestring , clientSocket, user , Authenticated);
         }
 
@@ -93,8 +93,10 @@ int cclient(shared_ptr<cs457::tcpUserSocket> clientSocket,int id)
 
 int main(int argc, char * argv[])
 {
-    parser.userPopulate();
     //used to check valid username and password
+    parser.userPopulate();
+    //fill chat rooms 
+    parser.GetChatRooms();
 
     cout << "Initializing Socket" << std::endl; 
     cs457::tcpServerSocket mysocket(2000);

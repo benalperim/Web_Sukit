@@ -18,19 +18,21 @@ void Parser::Parse(string command , shared_ptr<cs457::tcpUserSocket> clientSocke
 
 
         if(tokens[0] == "/quit"){
+            cout << "hit quit" << std::endl;
             QUIT(tokens , clientSocket , username, loop);
         }
 
-        if(tokens[0] == "/guest"){
+        else if(tokens[0] == "/guest"){
             cout << "hit guest" << std::endl;
              GUEST(clientSocket , username , loop);
         }
 
-        if(tokens[0] == "/help"){
+        else if(tokens[0] == "/help"){
+            cout << "hit help" << std::endl;
              HELP( clientSocket);
         }
 
-        if(tokens[0] == "/user"){
+        else if(tokens[0] == "/user"){
             cout << "hit user" << endl;
             USER(tokens, clientSocket, username, loop);
         }
@@ -72,6 +74,8 @@ chatUser Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string & 
     
     chatUser user(username , passwrd, clientSocket);
     Authval = true;
+    generalChat.push_back(user);
+
     return user;
 }
 
@@ -86,11 +90,43 @@ chatUser Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string & 
     if(validateUser(username , command[1])){
         chatUser user(username , pasword, clientSocket);
         Authval = true;
+        generalChat.push_back(user);
         return true;
     }
 
     return false;
   }
+
+
+vector<channel> Parser::GetChatRooms(){
+    ifstream ifstr;
+    ifstr.open("channels.txt");
+    string line;
+   
+    while(getline(ifstr, line)){
+        string RN, Topic, PW;
+        istringstream ss(line);
+        ss >> RN >> Topic >> PW;
+        channel pop;
+        pop.roomname = RN;
+        pop.topic = Topic;
+        pop.password = PW;
+        ChannelList.push_back(pop);
+    }
+    
+    return ChannelList;
+
+
+
+}
+
+
+
+
+
+
+
+
 
 
 
