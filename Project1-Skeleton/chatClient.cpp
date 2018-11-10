@@ -1,6 +1,5 @@
 #include <iostream> 
 #include "tcpClientSocket.h"
-#include "client.h"
 #include "Commands.h"
 #include <thread> 
 #include <stdio.h>
