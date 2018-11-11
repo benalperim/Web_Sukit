@@ -7,8 +7,7 @@
 #include <sstream>
 #include <algorithm>
 #include <cctype>   
-#include "tcpUserSocket.h"
-#include "tcpServerSocket.h"
+
 
 
 using namespace std; 
@@ -17,16 +16,20 @@ using namespace std;
 
     class chatUser{
         public: 
-            inline chatUser(string username, string password, shared_ptr<cs457::tcpUserSocket> socket): nickName(username), password(password), userSocket(socket){};
+
+            inline chatUser(string username, string password, string level, string banned): nickName(username), password(password), level(level) , banned(banned){};
             inline string getNickname(){return this->nickName;}
             inline string getPassword(){return this->password;}
-            inline shared_ptr<cs457::tcpUserSocket> getSocket(){return this-> userSocket;}
+            inline string getLevel(){return this -> level;}
+            inline string getBanned() {return this -> banned;}
             
 
         private:
+
             string nickName; 
             string password; 
-            shared_ptr<cs457::tcpUserSocket> userSocket; 
+            string level;
+            string banned
         
 
 

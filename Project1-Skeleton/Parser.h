@@ -8,7 +8,7 @@
 #include <cctype>   
 #include "tcpUserSocket.h"
 #include "tcpServerSocket.h"
-#include "chatUser.h"
+
 #include "userObject.h"
 #include <fstream>
 
@@ -19,6 +19,13 @@ struct channel {
     string topic;
     string password;
 };
+struct chatUser{
+    string username;
+    string password;
+    string level;
+    string banned;
+};
+ 
     
 class Parser{
    
@@ -42,14 +49,14 @@ class Parser{
         bool validateUser(string & username, string& password);
 
 
-        chatUser GUEST( shared_ptr<cs457::tcpUserSocket> clientSocket , string& username, bool & Authval);
+        userObject GUEST( shared_ptr<cs457::tcpUserSocket> clientSocket , string& username, bool & Authval);
         vector<channel> GetChatRooms();
 
             
     private:
         int  counter = 0;
-        vector<chatUser> messagingList;
-        vector<userObject> userList;
+        vector<userObject> messagingList;
+        vector<chatUser> userList;
         vector<channel> ChannelList;
         //vector<chatUser> generalChat;
         

@@ -68,7 +68,7 @@ void Parser::DIE(string&  username){
     bool allowed = false;
     cout << username << endl;
     for(unsigned int j = 0; j < userList.size(); j++){
-        if(username.compare(userList[j].userName) == 0){
+        if(username.compare(userList[j].username) == 0){
             string admin = "Admin";
             if(admin.compare(userList[j].level) == 0){
                 allowed = true;
@@ -77,7 +77,7 @@ void Parser::DIE(string&  username){
     }
     if(allowed){
         cout <<  "size of users " << messagingList.size() << endl;
-        for(int i = 0; i < messagingList.size(); i ++){
+        for(unsigned int i = 0; i < messagingList.size(); i ++){
         sleep(1);
         messagingList[i].getSocket()->sendString("Server is shutting down.");
         sleep(1);
@@ -110,13 +110,22 @@ void Parser::INFO(shared_ptr<cs457::tcpUserSocket> clientSocket){
 
 
 void Parser::JOIN(vector <string> command, shared_ptr<cs457::tcpUserSocket> clientSocket , string username){
-    
+    for(unsigned int j = 0; j < userList.size(); j++){
+        if(username.compare(userList[j].username) == 0){
+            string admin = "Admin";
+            string user = "user";
+            string sysop = "sysop";
+            if(admin.compare(userList[j].level) == 0 || user.compare(userList[j].level) == 0 || sysop.compare(userList[j].level) == 0  ){
+                
+            }
+        }
+    }
 }
 
 
 void Parser::LIST(shared_ptr<cs457::tcpUserSocket> clientSocket){
     string chatRoomInfo = "";
-    for(int i = 0; i < ChannelList.size(); i++ ){
+    for(unsigned int i = 0; i < ChannelList.size(); i++ ){
         chatRoomInfo += ChannelList.at(i).roomname + " with topic " + ChannelList.at(i).topic + " ";
         if(ChannelList.at(i).password.compare("@") == 0 ){
             chatRoomInfo += " pubic chat \n";
@@ -147,7 +156,7 @@ void Parser::QUIT(vector <string> command , shared_ptr<cs457::tcpUserSocket> cli
     if (command.size() >= 2){
         string msg = command[1];
         clientSocket.get()->sendString(msg);
-        for( int j = 0; j < messagingList.size(); j++){
+        for( unsigned int j = 0; j < messagingList.size(); j++){
             if(username.compare(messagingList[j].getNickname()) == 0){
                 cout << "matched at " << j << std::endl;
                 messagingList.erase(messagingList.begin()+j);
@@ -158,7 +167,7 @@ void Parser::QUIT(vector <string> command , shared_ptr<cs457::tcpUserSocket> cli
 
     else{
         clientSocket.get()->sendString("goodbye"); 
-        for( int j = 0; j < messagingList.size(); j++){
+        for( unsigned int j = 0; j < messagingList.size(); j++){
                 if(username.compare(messagingList[j].getNickname()) == 0){
                     cout << "matched at " << j << std::endl;
                     messagingList.erase(messagingList.begin()+j);
@@ -171,14 +180,15 @@ void Parser::QUIT(vector <string> command , shared_ptr<cs457::tcpUserSocket> cli
     clientSocket.get()->closeSocket(); 
 }
 
-chatUser Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string & username, bool & Authval){
+userObject Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string & username, bool & Authval){
     
     string passwrd = "-1";
     username += to_string(counter); 
     cout << "username " << username << std::endl;
     counter++;
     
-    chatUser user(username , passwrd, clientSocket);
+    userObject user(username, passwrd , clientSocket , "guest", "false" );
+ 
     messagingList.push_back(user); //changed
     Authval = true;
 
@@ -186,7 +196,7 @@ chatUser Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string & 
 }
 
   bool Parser::USER(vector <string> command , shared_ptr<cs457::tcpUserSocket> clientSocket ,string username , bool & Authval){
-   
+    string level ="user";
     string pasword = "-1";
     if(command.size() >= 2){
         pasword =command[1];
@@ -194,7 +204,16 @@ chatUser Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string & 
     cout << "uname  " << username << std::endl;
     cout << "paswrd  " << pasword << std::endl;
     if(validateUser(username , command[1])){
-        chatUser user(username , pasword, clientSocket);
+        
+        for (unsigned int i = 0; i < userList.size(); i++ ){
+            if(username.compare(userList[i].username) == 0){
+                string level = userList[i].level;
+                
+            }
+        }
+
+
+        userObject user (username , pasword ,clientSocket, level, "false" ); 
         messagingList.push_back(user); //changed
         Authval = true;
         return true;
@@ -202,14 +221,6 @@ chatUser Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string & 
 
     return false;
   }
-
-
-
-
-
-
-
-
 
 
 
@@ -258,10 +269,10 @@ void Parser::userPopulate(){ //Call this upon start of SERVER
     string username, password, level, banned;
 
     while(getline(ifstr, line)){
-        userObject tempObj;
+        chatUser tempObj;
         istringstream ss(line);
         ss >> username >> password >> level >> banned;
-        tempObj.userName = username;
+        tempObj.username = username;
         tempObj.password = password;
         tempObj.level = level;
         tempObj.banned = banned;
@@ -275,7 +286,7 @@ bool Parser::validateUser(string& username, string& password){ //checks to see i
    //cout << "size : @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@- " << userList.size() << std::endl;
     if(bannedUser(username)){cout << "Banned User: "<< username << endl; return false;}
     for(unsigned int i = 0; i < userList.size(); i++){
-        string uName = userList[i].userName;
+        string uName = userList[i].username;
         //cout << "checking " << uName << std::endl;
         
         if(username.compare(uName) == 0){ //Username is in list, check the password
