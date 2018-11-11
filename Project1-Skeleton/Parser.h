@@ -8,9 +8,10 @@
 #include <cctype>   
 #include "tcpUserSocket.h"
 #include "tcpServerSocket.h"
-#include "chatUser.h"
+
 #include "userObject.h"
 #include <fstream>
+#include <unordered_map>
 
 
 using namespace std;
@@ -19,6 +20,24 @@ struct channel {
     string topic;
     string password;
 };
+struct chatUser{
+    string username;
+    string password;
+    string level;
+    string banned;
+};
+ 
+struct RoomUser{
+    shared_ptr<cs457::tcpUserSocket> socket;
+    string userName;
+}; 
+
+struct Chatroom {
+    string roomName;
+    RoomUser user;
+};
+
+
     
 class Parser{
    
@@ -35,22 +54,24 @@ class Parser{
         void LIST(shared_ptr<cs457::tcpUserSocket> clientSocket );
         void JOIN(vector <string> command, shared_ptr<cs457::tcpUserSocket> clientSocket , string username);
 
-
+        
         bool USER(vector <string> command , shared_ptr<cs457::tcpUserSocket> clientSocket, string username,  bool & Authval);
         bool bannedUser(string&);
         void userPopulate();
         bool validateUser(string & username, string& password);
 
 
-        chatUser GUEST( shared_ptr<cs457::tcpUserSocket> clientSocket , string& username, bool & Authval);
+        userObject GUEST( shared_ptr<cs457::tcpUserSocket> clientSocket , string& username, bool & Authval);
         vector<channel> GetChatRooms();
-
-            
+        // this is where the magic happens    
+        void MAGIC(string command, shared_ptr<cs457::tcpUserSocket> clientSocket , string username);   
     private:
         int  counter = 0;
-        vector<chatUser> messagingList;
-        vector<userObject> userList;
+        vector<userObject> messagingList;
+        vector<chatUser> userList;
         vector<channel> ChannelList;
+        vector<Chatroom> ChatRooms;
         //vector<chatUser> generalChat;
+
         
 };

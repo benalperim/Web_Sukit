@@ -27,7 +27,7 @@ void Parser::Parse(string command , shared_ptr<cs457::tcpUserSocket> clientSocke
              GUEST(clientSocket , username , loop);
         }
 
-        if(tokens[0] == "/help"){
+        else if(tokens[0] == "/help"){
              HELP(clientSocket);
         }
 
@@ -36,30 +36,35 @@ void Parser::Parse(string command , shared_ptr<cs457::tcpUserSocket> clientSocke
             USER(tokens, clientSocket, username, loop);
         }
 
-        if(tokens[0] == "/die"){
+        else if(tokens[0] == "/die"){
             cout << "hit die check privilage" << endl;
             DIE(username); // USERNAME IS STORED WRONG ASK ALPER
         }
 
-        if(tokens[0] == "/privmsg"){
+        else if(tokens[0] == "/privmsg"){
             cout << "priv msg" << endl;
             PRIVMSG(tokens, username);
         }
 
-        if(tokens[0] == "/join"){
+        else if(tokens[0] == "/join"){
              cout << "hit join" << endl;
             JOIN(tokens , clientSocket , username);
         }
 
-        if(tokens[0] == "/info"){
+        else if(tokens[0] == "/info"){
              cout << "hit info" << endl;
             INFO(clientSocket);
         }
 
-        if(tokens[0] == "/list"){
+        else if(tokens[0] == "/list"){
             cout << "hit list" << endl;
             LIST(clientSocket);
         }
+       
+    }
+    else {
+            cout << "hit MAGICCC" << endl;
+            MAGIC(command, clientSocket , username);
     }
 }
 
@@ -68,7 +73,7 @@ void Parser::DIE(string&  username){
     bool allowed = false;
     cout << username << endl;
     for(unsigned int j = 0; j < userList.size(); j++){
-        if(username.compare(userList[j].userName) == 0){
+        if(username.compare(userList[j].username) == 0){
             string admin = "Admin";
             if(admin.compare(userList[j].level) == 0){
                 allowed = true;
@@ -77,7 +82,7 @@ void Parser::DIE(string&  username){
     }
     if(allowed){
         cout <<  "size of users " << messagingList.size() << endl;
-        for(int i = 0; i < messagingList.size(); i ++){
+        for(unsigned int i = 0; i < messagingList.size(); i ++){
         sleep(1);
         messagingList[i].getSocket()->sendString("Server is shutting down.");
         sleep(1);
@@ -108,20 +113,111 @@ void Parser::HELP(shared_ptr<cs457::tcpUserSocket> clientSocket){
 void Parser::INFO(shared_ptr<cs457::tcpUserSocket> clientSocket){
     string about = "This Chatting Application is brought to you by a Turkish Delight and Baby Blue  (Alper K. and Jacob T.)";
     clientSocket.get()->sendString(about);
+    
 }
 
 
 void Parser::JOIN(vector <string> command, shared_ptr<cs457::tcpUserSocket> clientSocket , string username){
     
+    if (command.size() > 1 ){
+        //get room name
+        string roomName = command[1];
+        cout << "room name = " <<roomName << endl;
+        //get room password
+        string roomPassword = "-1";
+
+        for(unsigned int i = 0; i < ChannelList.size(); i++ ){
+            if(roomName.compare(ChannelList[i].roomname) == 0){
+                roomPassword = ChannelList[i].password;
+            }
+        }
+        if(roomPassword == "-1"){
+            clientSocket.get()->sendString("Try /list to see all chat rooms available" );
+            return;
+        }
+        cout << "room password = " << roomPassword << endl;
+
+        for(unsigned int j = 0; j < messagingList.size(); j++){
+            if(username.compare(messagingList[j].getNickname()) == 0){
+                 cout << "user = " << messagingList[j].getNickname() << endl;
+                if(messagingList[j].getLevel().compare("guest") == 0){ 
+                    if(  roomPassword != "@" ){
+                        clientSocket.get()->sendString("guests do not have the privilage to join a Password protected rooms");
+                        return;
+                    }else {
+                        clientSocket.get()->sendString(username + " joined " + roomName + "!! \n" );
+                        Chatroom room;
+                        room.roomName = roomName;
+
+                        RoomUser rmUsr;
+                        rmUsr.userName = username;
+                        rmUsr.socket = clientSocket;
+
+                        room.user = rmUsr;
+                        ChatRooms.push_back(room);
+
+                        return;
+                    } 
+                }
+                else if (messagingList[j].getLevel().compare("guest") != 0){
+                    if(  roomPassword != "@" ){
+                        if (!(command.size() > 2) ){
+                            clientSocket.get()->sendString("Please provide a password for protected rooms " );
+                            return;
+                        }
+                        if(roomPassword.compare(command[2]) == 0){
+                            //cout << "user level " << messagingList[j].getLevel() << endl;
+                            clientSocket.get()->sendString(username + " joined " + roomName + "!! \n" );
+                                Chatroom room;
+                                room.roomName = roomName;
+                                
+                                RoomUser rmUsr;
+                                rmUsr.userName = username;
+                                rmUsr.socket = clientSocket;
+
+                                room.user = rmUsr;
+                                ChatRooms.push_back(room);
+
+                            return;
+                        }
+                        else if(roomPassword.compare(command[2]) != 0){
+                            clientSocket.get()->sendString("wrong password for room :" + roomName );
+                            return;
+                        }
+                    
+                    }
+                    else{
+                        clientSocket.get()->sendString(username + " joined " + roomName + "!! \n" );
+                            Chatroom room;
+                            room.roomName = roomName;
+                            
+                            RoomUser rmUsr;
+                            rmUsr.userName = username;
+                            rmUsr.socket = clientSocket;
+
+                            room.user = rmUsr;
+                            ChatRooms.push_back(room);
+                        return;
+                    }
+                }
+                //clientSocket.get()->sendString("if you hit here IDK how you managed it but you dont exist technically" );
+            }
+        }
+    }
+
+    else{
+        clientSocket.get()->sendString("send room name first and password if applicable");
+        return;
+    }
 }
 
 
 void Parser::LIST(shared_ptr<cs457::tcpUserSocket> clientSocket){
     string chatRoomInfo = "";
-    for(int i = 0; i < ChannelList.size(); i++ ){
+    for(unsigned int i = 0; i < ChannelList.size(); i++ ){
         chatRoomInfo += ChannelList.at(i).roomname + " with topic " + ChannelList.at(i).topic + " ";
         if(ChannelList.at(i).password.compare("@") == 0 ){
-            chatRoomInfo += " pubic chat \n";
+            chatRoomInfo += " public chat \n";
         }
         else 
             chatRoomInfo += " password Protected chat \n";
@@ -149,7 +245,7 @@ void Parser::QUIT(vector <string> command , shared_ptr<cs457::tcpUserSocket> cli
     if (command.size() >= 2){
         string msg = command[1];
         clientSocket.get()->sendString(msg);
-        for( int j = 0; j < messagingList.size(); j++){
+        for( unsigned int j = 0; j < messagingList.size(); j++){
             if(username.compare(messagingList[j].getNickname()) == 0){
                 cout << "matched at " << j << std::endl;
                 messagingList.erase(messagingList.begin()+j);
@@ -160,7 +256,7 @@ void Parser::QUIT(vector <string> command , shared_ptr<cs457::tcpUserSocket> cli
 
     else{
         clientSocket.get()->sendString("goodbye"); 
-        for( int j = 0; j < messagingList.size(); j++){
+        for( unsigned int j = 0; j < messagingList.size(); j++){
                 if(username.compare(messagingList[j].getNickname()) == 0){
                     cout << "matched at " << j << std::endl;
                     messagingList.erase(messagingList.begin()+j);
@@ -173,14 +269,15 @@ void Parser::QUIT(vector <string> command , shared_ptr<cs457::tcpUserSocket> cli
     clientSocket.get()->closeSocket(); 
 }
 
-chatUser Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string & username, bool & Authval){
+userObject Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string & username, bool & Authval){
     
     string passwrd = "-1";
     username += to_string(counter); 
     cout << "username " << username << std::endl;
     counter++;
     
-    chatUser user(username , passwrd, clientSocket);
+    userObject user(username, passwrd , clientSocket , "guest", "false" );
+ 
     messagingList.push_back(user); //changed
     Authval = true;
 
@@ -188,7 +285,7 @@ chatUser Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string & 
 }
 
   bool Parser::USER(vector <string> command , shared_ptr<cs457::tcpUserSocket> clientSocket ,string username , bool & Authval){
-   
+    string level ="user";
     string pasword = "-1";
     if(command.size() >= 2){
         pasword =command[1];
@@ -196,7 +293,15 @@ chatUser Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string & 
     cout << "uname  " << username << std::endl;
     cout << "paswrd  " << pasword << std::endl;
     if(validateUser(username , command[1])){
-        chatUser user(username , pasword, clientSocket);
+        
+        for (unsigned int i = 0; i < userList.size(); i++ ){
+            if(username.compare(userList[i].username) == 0){
+                string level = userList[i].level;
+            }
+        }
+
+
+        userObject user (username , pasword ,clientSocket, level, "false" ); 
         messagingList.push_back(user); //changed
         Authval = true;
         return true;
@@ -207,8 +312,44 @@ chatUser Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string & 
 
 
 
+//MAGIC
+void Parser::MAGIC(string command, shared_ptr<cs457::tcpUserSocket> clientSocket , string username){
+    cout << "chat Room Size : "<< ChatRooms.size() << endl;
+    
+    vector<RoomUser> sameUsers;
+
+    string overall = "[" + username + "]" + ": " + command;
 
 
+    for(unsigned int i = 0; i < ChatRooms.size(); i++){
+        if(ChatRooms[i].user.userName.compare(username) == 0){
+            string roomName = ChatRooms[i].roomName;
+            cout << "roomname "<< roomName << endl;
+            for(unsigned int j = 0; j < ChatRooms.size(); j++){
+                if(ChatRooms[j].roomName.compare(roomName) == 0){
+                    RoomUser RU;
+                    RU.userName = ChatRooms[j].user.userName;
+                    RU.socket = ChatRooms[j].user.socket;
+                    sameUsers.push_back(RU);
+                    
+                }
+            }
+            
+        }
+
+    }
+    if(sameUsers.size() == 0){
+        return;
+    }else{
+    for(unsigned int k = 0; k < sameUsers.size(); k++){
+                sameUsers[k].socket.get()-> sendString(overall);
+                sleep(1);
+
+    }
+
+    }
+
+}
 
 
 
@@ -260,10 +401,10 @@ void Parser::userPopulate(){ //Call this upon start of SERVER
     string username, password, level, banned;
 
     while(getline(ifstr, line)){
-        userObject tempObj;
+        chatUser tempObj;
         istringstream ss(line);
         ss >> username >> password >> level >> banned;
-        tempObj.userName = username;
+        tempObj.username = username;
         tempObj.password = password;
         tempObj.level = level;
         tempObj.banned = banned;
@@ -277,7 +418,7 @@ bool Parser::validateUser(string& username, string& password){ //checks to see i
    //cout << "size : @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@- " << userList.size() << std::endl;
     if(bannedUser(username)){cout << "Banned User: "<< username << endl; return false;}
     for(unsigned int i = 0; i < userList.size(); i++){
-        string uName = userList[i].userName;
+        string uName = userList[i].username;
         //cout << "checking " << uName << std::endl;
         
         if(username.compare(uName) == 0){ //Username is in list, check the password
