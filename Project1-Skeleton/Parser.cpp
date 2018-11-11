@@ -18,12 +18,12 @@ void Parser::Parse(string command , shared_ptr<cs457::tcpUserSocket> clientSocke
 
 
         if(tokens[0] == "/quit"){
-            cout << "hit quit" << std::endl;
+            //cout << "hit quit" << std::endl;
             QUIT(tokens , clientSocket , username, loop);
         }
 
         else if(tokens[0] == "/guest"){
-            cout << "hit guest" << std::endl;
+            //cout << "hit guest" << std::endl;
              GUEST(clientSocket , username , loop);
         }
 
@@ -32,38 +32,38 @@ void Parser::Parse(string command , shared_ptr<cs457::tcpUserSocket> clientSocke
         }
 
         else if(tokens[0] == "/user"){
-            cout << "hit user" << endl;
+            //cout << "hit user" << endl;
             USER(tokens, clientSocket, username, loop);
         }
 
         else if(tokens[0] == "/die"){
-            cout << "hit die check privilage" << endl;
+            //cout << "hit die check privilage" << endl;
             DIE(username); // USERNAME IS STORED WRONG ASK ALPER
         }
 
         else if(tokens[0] == "/privmsg"){
-            cout << "priv msg" << endl;
+           // cout << "priv msg" << endl;
             PRIVMSG(tokens, username);
         }
 
         else if(tokens[0] == "/join"){
-             cout << "hit join" << endl;
+             //cout << "hit join" << endl;
             JOIN(tokens , clientSocket , username);
         }
 
         else if(tokens[0] == "/info"){
-             cout << "hit info" << endl;
+             //cout << "hit info" << endl;
             INFO(clientSocket);
         }
 
         else if(tokens[0] == "/list"){
-            cout << "hit list" << endl;
+            //cout << "hit list" << endl;
             LIST(clientSocket);
         }
        
     }
     else {
-            cout << "hit MAGICCC" << endl;
+            //cout << "hit MAGICCC" << endl;
             MAGIC(command, clientSocket , username);
     }
 }
@@ -71,7 +71,7 @@ void Parser::Parse(string command , shared_ptr<cs457::tcpUserSocket> clientSocke
 
 void Parser::DIE(string&  username){
     bool allowed = false;
-    cout << username << endl;
+    //cout << username << endl;
     for(unsigned int j = 0; j < userList.size(); j++){
         if(username.compare(userList[j].username) == 0){
             string admin = "Admin";
@@ -81,7 +81,7 @@ void Parser::DIE(string&  username){
         }
     }
     if(allowed){
-        cout <<  "size of users " << messagingList.size() << endl;
+        //cout <<  "size of users " << messagingList.size() << endl;
         for(unsigned int i = 0; i < messagingList.size(); i ++){
         sleep(1);
         messagingList[i].getSocket()->sendString("Server is shutting down.");
@@ -122,7 +122,7 @@ void Parser::JOIN(vector <string> command, shared_ptr<cs457::tcpUserSocket> clie
     if (command.size() > 1 ){
         //get room name
         string roomName = command[1];
-        cout << "room name = " <<roomName << endl;
+        //cout << "room name = " <<roomName << endl;
         //get room password
         string roomPassword = "-1";
 
@@ -135,11 +135,11 @@ void Parser::JOIN(vector <string> command, shared_ptr<cs457::tcpUserSocket> clie
             clientSocket.get()->sendString("Try /list to see all chat rooms available" );
             return;
         }
-        cout << "room password = " << roomPassword << endl;
+        //cout << "room password = " << roomPassword << endl;
 
         for(unsigned int j = 0; j < messagingList.size(); j++){
             if(username.compare(messagingList[j].getNickname()) == 0){
-                 cout << "user = " << messagingList[j].getNickname() << endl;
+                 //cout << "user = " << messagingList[j].getNickname() << endl;
                 if(messagingList[j].getLevel().compare("guest") == 0){ 
                     if(  roomPassword != "@" ){
                         clientSocket.get()->sendString("guests do not have the privilage to join a Password protected rooms");
@@ -232,7 +232,7 @@ void Parser::PRIVMSG(vector<string>& tokens, string& username){
     for(unsigned int i = 2; i < tokens.size(); i++){ // makes string to send to user
         message += tokens[i] + " ";
     }
-    cout << message << endl;
+    //cout << message << endl;
     for(unsigned int j = 0; j < messagingList.size(); j++){ //searches user list in order to find which socket to send to 
         if(tokens[1].compare(messagingList[j].getNickname()) == 0){
             messagingList[j].getSocket()->sendString(message);
@@ -247,7 +247,7 @@ void Parser::QUIT(vector <string> command , shared_ptr<cs457::tcpUserSocket> cli
         clientSocket.get()->sendString(msg);
         for( unsigned int j = 0; j < messagingList.size(); j++){
             if(username.compare(messagingList[j].getNickname()) == 0){
-                cout << "matched at " << j << std::endl;
+                //cout << "matched at " << j << std::endl;
                 messagingList.erase(messagingList.begin()+j);
             }
         }
@@ -258,7 +258,7 @@ void Parser::QUIT(vector <string> command , shared_ptr<cs457::tcpUserSocket> cli
         clientSocket.get()->sendString("goodbye"); 
         for( unsigned int j = 0; j < messagingList.size(); j++){
                 if(username.compare(messagingList[j].getNickname()) == 0){
-                    cout << "matched at " << j << std::endl;
+                    //cout << "matched at " << j << std::endl;
                     messagingList.erase(messagingList.begin()+j);
                 }
             }
@@ -273,7 +273,7 @@ userObject Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string 
     
     string passwrd = "-1";
     username += to_string(counter); 
-    cout << "username " << username << std::endl;
+    //cout << "username " << username << std::endl;
     counter++;
     
     userObject user(username, passwrd , clientSocket , "guest", "false" );
@@ -290,8 +290,8 @@ userObject Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string 
     if(command.size() >= 2){
         pasword =command[1];
     }
-    cout << "uname  " << username << std::endl;
-    cout << "paswrd  " << pasword << std::endl;
+    //cout << "uname  " << username << std::endl;
+    //cout << "paswrd  " << pasword << std::endl;
     if(validateUser(username , command[1])){
         
         for (unsigned int i = 0; i < userList.size(); i++ ){
@@ -314,7 +314,7 @@ userObject Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string 
 
 //MAGIC
 void Parser::MAGIC(string command, shared_ptr<cs457::tcpUserSocket> clientSocket , string username){
-    cout << "chat Room Size : "<< ChatRooms.size() << endl;
+    //cout << "chat Room Size : "<< ChatRooms.size() << endl;
     
     vector<RoomUser> sameUsers;
 
@@ -324,7 +324,7 @@ void Parser::MAGIC(string command, shared_ptr<cs457::tcpUserSocket> clientSocket
     for(unsigned int i = 0; i < ChatRooms.size(); i++){
         if(ChatRooms[i].user.userName.compare(username) == 0){
             string roomName = ChatRooms[i].roomName;
-            cout << "roomname "<< roomName << endl;
+            //cout << "roomname "<< roomName << endl;
             for(unsigned int j = 0; j < ChatRooms.size(); j++){
                 if(ChatRooms[j].roomName.compare(roomName) == 0){
                     RoomUser RU;

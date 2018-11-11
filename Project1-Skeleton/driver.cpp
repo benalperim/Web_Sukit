@@ -96,8 +96,10 @@ int main(int argc, char * argv[])
 {
    
     //used to check valid username and password
+    cout << "Getting saved users" << endl;
     parser.userPopulate();
     //fill chat rooms 
+    cout << "Setting up Chat Rooms" << endl;
     parser.GetChatRooms();
     
     cout << "Initializing Socket" << std::endl; 
