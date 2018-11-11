@@ -1,0 +1,4 @@
+gnome-terminal -x "bash" -c "g++ -g tcpClientSocket.cpp chatClient.cpp -pthread -o chatClient.out  && ./chatClient.out -h 127.0.0.1 -t testFile1.txt"
+gnome-terminal -x "bash" -c "sleep 2s; g++ -g tcpClientSocket.cpp chatClient.cpp -pthread -o chatClient.out  && ./chatClient.out -u fortega -t testFile2.txt"
+gnome-terminal -x "bash" -c "sleep 4s; g++ -g tcpClientSocket.cpp chatClient.cpp -pthread -o chatClient.out  && ./chatClient.out -p 2000 -t testFile3.txt"
+gnome-terminal -x "bash" -c "sleep 6s; g++ -g tcpClientSocket.cpp chatClient.cpp -pthread -o chatClient.out  && ./chatClient.out -h 127.0.0.1 -p 2000 -u JakeBaby -t testFile4.txt"

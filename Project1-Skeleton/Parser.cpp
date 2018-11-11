@@ -91,14 +91,16 @@ void Parser::DIE(string&  username){
 
 void Parser::HELP(shared_ptr<cs457::tcpUserSocket> clientSocket){
     string help = "";
-    help += "/CONNECT: \n Connect takes a target server and port. Telling the server to connect to said server and port. Only allowed for Sysop or higher\n\n";
+    //help += "/CONNECT: \n Connect takes a target server and port. Telling the server to connect to said server and port. Only allowed for Sysop or higher\n\n";
     help += "/DIE \n Die instructs the server to shut down. Only allowed by Admin\n\n";
-    help += "/INVITE\n Invite takes a nickname and a channel name.  This invites the specified user to the specified channel.\n\n";
-    help += "/JOIN \n Join takes a list of channels seperated by a ','.  This will allow the client to join the specified channels, and if the channel does not exist one is made. Channel must be a number.\n\n";
-    help += "/KILL \n Kill takes a client and a comment.  This removes the client from the network with a message of why. Only allowed for Sysop or higher.\n\n";
+    //help += "/INVITE\n Invite takes a nickname and a channel name.  This invites the specified user to the specified channel.\n\n";
+    help += "/INFO \n Info displays information about the creators of this chatting application\n\n";
+    help += "/JOIN \n Join takes a channel and a password if needed.  This will allow the client to join the specified channel, and if the channel does not exist one is made.\n\n";
+    //help += "/KILL \n Kill takes a client and a comment.  This removes the client from the network with a message of why. Only allowed for Sysop or higher.\n\n";
+    help += "/LIST \n List provides a list of of available channels along with thier topics and if a password is needed";
     help += "/PRIVMSG \n Privmsg takes a message reciever and a message.  This will send the message to the inidivual you specify.\n\n";
     help += "/QUIT \n Quit removes the user from the server.\n\n";
-    help += "/WHO \n Who takes a name or part of a name.  This returns anyone who has name or part of the name in their nickname.\n\n";
+    //help += "/WHO \n Who takes a name or part of a name.  This returns anyone who has name or part of the name in their nickname.\n\n";
     clientSocket.get()->sendString(help);
 }
 

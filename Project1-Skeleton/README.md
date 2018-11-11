@@ -89,4 +89,22 @@ File List
 Design Decisions and Issues
 ----------------------------------------
 
-    PUT DECISIONS AND ERRORS HERE
+    We were able to implement the following commands:
+        -/QUIT
+            - Allows the client to quit their session within the server.
+        -/HELP
+            - Displays a list of commands that we have implemented during the sessions 
+        -/DIE
+            - Allows an Admin to shut down the server, notifying all the clients that s/he has done so.
+        -/PRIVMSG
+            - Allows two users to message privately between one another
+        -/JOIN
+            - Allows a user to join a Channel in order to talk to others inside that channel.
+        -/INFO
+            - Displays info on the creaters of the chatting application.
+        -/LIST
+            - Displays the information on which channels are on the server, what their topic is, and if they require a password.
+
+
+        -/Guest & /User
+            - this is a project design, allowing us to differentiate between a guest and a registered user.
