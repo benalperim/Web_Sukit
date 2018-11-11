@@ -9,9 +9,11 @@ Compile
     Server:
         run 
     Client:
-        runClient
+        runClient (For Admin registered account)
+        runClient2 (For non-Admin registered account)
+        runGuest (For Guest account)
     Test: 
-        runClientTest# (# of test file to run)
+        runClientTest
 
 ----------------------------------------
 Command line arguments
@@ -27,7 +29,7 @@ Command line arguments
         -u username
             ~ username you want to connect as, guest is defualt.
         -t testfile
-            ~ uses test files to call a command.
+            ~ uses test files to call a command. This will spawn 4 different terminals, automatically testing (when turning in) help, info, list, and quit.
 
 
 ----------------------------------------
@@ -49,6 +51,8 @@ File List
     .cpp/.h:
         chatClient(.cpp)
             - This file initiates a client, creates a socket inbetween the server and the client.  Send and recieves messages from and to the server.  The recieve is threaded so it can recieve multiple messages.
+        chatUser(.h)
+            - This is an object that is similar to userObject, minus the socket tied to it. (graveyard)
         client(.h)
             - Contains the necessities for a client, including a way to store hostname, username, and port number
         Commands(.cpp/.h)(graveyard)
@@ -68,7 +72,7 @@ File List
         tcpUserSocket(.cpp/.h)
             - This file was one of the provided files that contains methods to spawn a socket for the client. Has methods to open and close the given socket, along with methods to send and recieve strings on the given socket.
         userObject(.h)
-            - This is an object file that creates and object name userObject, that contains the contents of the users.txt file.  Each object holds the username, password, level of permission, and if they are banned or not. 
+            - This is an object file that creates and object name userObject, that contains the contents of the users.txt file.  Each object holds the username, password, their socket ,level of permission, and if they are banned or not. 
         utils(.h)
             - This file was one of the provided files that contains a singular method to be able to round up to the nearest multiple of a number.
         
@@ -99,7 +103,7 @@ Design Decisions and Issues
         -/PRIVMSG
             - Allows two users to message privately between one another
         -/JOIN
-            - Allows a user to join a Channel in order to talk to others inside that channel.
+            - Allows a user to join a Channel in order to talk to others inside that channel. You can only be in one chat room at one time.
         -/INFO
             - Displays info on the creaters of the chatting application.
         -/LIST
@@ -108,3 +112,7 @@ Design Decisions and Issues
 
         -/Guest & /User
             - this is a project design, allowing us to differentiate between a guest and a registered user.
+
+    We purposely left the SERVER REPLY funciton in order to identify what you typed to the server, and if the server was responding.
+
+    -One of the issues we have right now, we do not check for the same user. So do not try to runClient more than once. We have runClient and runClient2 if you want to run mutliple clients (it will work, however it will break when it comes to chat rooms).  Running runGuest multiple times will not throw an error because we append an individual number to each guests name. We do not know how to compare TcpUserSockets.
