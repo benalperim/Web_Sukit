@@ -145,7 +145,7 @@ void Parser::JOIN(vector <string> command, shared_ptr<cs457::tcpUserSocket> clie
                         clientSocket.get()->sendString("guests do not have the privilage to join a Password protected rooms");
                         return;
                     }else {
-                        clientSocket.get()->sendString(username + " joined " + roomName + "!! \n" );
+                        clientSocket.get()->sendString("[" + username + "] joined " + roomName + "!! \n" );
                         Chatroom room;
                         room.roomName = roomName;
 

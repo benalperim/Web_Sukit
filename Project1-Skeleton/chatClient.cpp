@@ -246,7 +246,7 @@ int main(int argc, char * argv[])
         if(message.length() >= 5){
             if(message.at(0) == '/'){
                 string hokuspokus = message.substr(1,4);
-                cout << "hokuspokus= " << hokuspokus << endl;
+                //cout << "hokuspokus= " << hokuspokus << endl;
                 transform(hokuspokus.begin(), hokuspokus.end(), hokuspokus.begin(), ::tolower);
             
                 if(hokuspokus.compare("quit") == 0){
