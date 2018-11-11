@@ -247,8 +247,22 @@ void Parser::QUIT(vector <string> command , shared_ptr<cs457::tcpUserSocket> cli
             if(username.compare(messagingList[j].getNickname()) == 0){
                 //cout << "matched at " << j << std::endl;
                 messagingList.erase(messagingList.begin()+j);
+
             }
+            
         }
+        for( unsigned int k = 0; k < ChatRooms.size(); k++){
+            if(username.compare(ChatRooms[k].user.userName) == 0){
+                //cout << "matched at " << j << std::endl;
+                ChatRooms.erase(ChatRooms.begin()+k);
+
+            }
+            
+        }
+
+
+
+
         sleep(1);
     }
 
@@ -313,7 +327,7 @@ userObject Parser::GUEST(shared_ptr<cs457::tcpUserSocket> clientSocket , string 
 //MAGIC
 void Parser::MAGIC(string command, shared_ptr<cs457::tcpUserSocket> clientSocket , string username){
     //cout << "chat Room Size : "<< ChatRooms.size() << endl;
-    
+    string roomName = "-1";
     vector<RoomUser> sameUsers;
 
     string overall = "[" + username + "]" + ": " + command;
@@ -321,21 +335,27 @@ void Parser::MAGIC(string command, shared_ptr<cs457::tcpUserSocket> clientSocket
 
     for(unsigned int i = 0; i < ChatRooms.size(); i++){
         if(ChatRooms[i].user.userName.compare(username) == 0){
-            string roomName = ChatRooms[i].roomName;
+             roomName = ChatRooms[i].roomName;
             //cout << "roomname "<< roomName << endl;
-            for(unsigned int j = 0; j < ChatRooms.size(); j++){
+            
+        }
+
+    }
+    if(roomName == "-1")
+    {
+        return;
+    }
+    for(unsigned int j = 0; j < ChatRooms.size(); j++){
                 if(ChatRooms[j].roomName.compare(roomName) == 0){
+                    
                     RoomUser RU;
                     RU.userName = ChatRooms[j].user.userName;
                     RU.socket = ChatRooms[j].user.socket;
                     sameUsers.push_back(RU);
                     
                 }
-            }
-            
-        }
-
     }
+            
     if(sameUsers.size() == 0){
         return;
     }else{
