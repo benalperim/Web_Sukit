@@ -60,6 +60,15 @@ void Parser::Parse(string command , shared_ptr<cs457::tcpUserSocket> clientSocke
             //cout << "hit list" << endl;
             LIST(clientSocket);
         }
+        else if(tokens[0] == "/rules"){
+            RULES(clientSocket);
+        }
+        else if(tokens[0] == "/version"){
+            VERSION(clientSocket);
+        }
+        else if(tokens[0] == "/time"){
+            TIME(clientSocket);
+        }
        
     }
     else {
@@ -102,9 +111,12 @@ void Parser::HELP(shared_ptr<cs457::tcpUserSocket> clientSocket){
     help += "/INFO \n Info displays information about the creators of this chatting application\n\n";
     help += "/JOIN \n Join takes a channel and a password if needed.  This will allow the client to join the specified channel, and if the channel does not exist one is made.\n\n";
     //help += "/KILL \n Kill takes a client and a comment.  This removes the client from the network with a message of why. Only allowed for Sysop or higher.\n\n";
-    help += "/LIST \n List provides a list of of available channels along with thier topics and if a password is needed";
+    help += "/LIST \n List provides a list of of available channels along with thier topics and if a password is needed.\n\n";
     help += "/PRIVMSG \n Privmsg takes a message reciever and a message.  This will send the message to the inidivual you specify.\n\n";
     help += "/QUIT \n Quit removes the user from the server.\n\n";
+    help += "/RULES \n Rules shows the rules set for the server.\n\n";
+    help += "/TIME \n Time gives the local time for wherever you are.\n\n";
+    help += "/VERSION \n Version shows information on the current server.\n\n";
     //help += "/WHO \n Who takes a name or part of a name.  This returns anyone who has name or part of the name in their nickname.\n\n";
     clientSocket.get()->sendString(help);
 }
@@ -226,6 +238,25 @@ void Parser::LIST(shared_ptr<cs457::tcpUserSocket> clientSocket){
 
 }
 
+void Parser::RULES(shared_ptr<cs457::tcpUserSocket> clientSocket){
+    string rules = "Only one rule: do not break our Chat Application";
+    clientSocket.get()->sendString(rules);
+}
+
+void Parser::VERSION(shared_ptr<cs457::tcpUserSocket> clientSocket){
+    string version = "The one and only version of our server is the first version. Quit asking.";
+    clientSocket.get()->sendString(version);
+}
+
+void Parser::TIME(shared_ptr<cs457::tcpUserSocket> clientSocket){
+    time_t rawtime;
+    struct tm * timeinfo;
+
+    time (&rawtime);
+    timeinfo = localtime (&rawtime);
+    string temp = asctime(timeinfo);
+    clientSocket.get()->sendString("Current local time and date: " + temp);
+}
 
 void Parser::PRIVMSG(vector<string>& tokens, string& username){
     string message = "From [" + username + "]: ";

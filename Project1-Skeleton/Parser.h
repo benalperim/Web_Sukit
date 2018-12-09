@@ -8,7 +8,8 @@
 #include <cctype>   
 #include "tcpUserSocket.h"
 #include "tcpServerSocket.h"
-
+#include <time.h>
+#include <stdio.h>
 #include "userObject.h"
 #include <fstream>
 #include <unordered_map>
@@ -53,6 +54,9 @@ class Parser{
         void QUIT(vector <string> command, shared_ptr<cs457::tcpUserSocket> clientSocket , string username, bool & loop);
         void LIST(shared_ptr<cs457::tcpUserSocket> clientSocket );
         void JOIN(vector <string> command, shared_ptr<cs457::tcpUserSocket> clientSocket , string username);
+        void RULES(shared_ptr<cs457::tcpUserSocket> clientSocket);
+        void VERSION(shared_ptr<cs457::tcpUserSocket> clientSocket);
+        void TIME(shared_ptr<cs457::tcpUserSocket> clientSocket);
 
         
         bool USER(vector <string> command , shared_ptr<cs457::tcpUserSocket> clientSocket, string username,  bool & Authval);
