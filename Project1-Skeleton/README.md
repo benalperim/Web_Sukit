@@ -108,6 +108,13 @@ Design Decisions and Issues
             - Displays info on the creaters of the chatting application.
         -/LIST
             - Displays the information on which channels are on the server, what their topic is, and if they require a password.
+        -/RULES
+            - Displays the rules for the server.
+        -/TIME
+            - Displays the local time for the user who requested it.
+        -/VERSION
+            - Displays the version of the current running server.
+        
 
 
         -/Guest & /User
